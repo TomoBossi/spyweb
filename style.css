@@ -1,0 +1,92 @@
+html, body {
+  background-color: rgb(15, 15, 15);
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+#monaco_wrapper {
+  background-color: #1e1e1e;
+  height: 100%;
+  resize: horizontal;
+  overflow: auto;
+  max-width: 70%;
+  min-width: 30%;
+  border-right: 1px rgb(84, 84, 84) solid;
+}
+
+#monaco_editor_buttons_bar {
+  display: flex;
+  background-color: rgb(42, 42, 42);
+  height: 30px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.monaco_editor_button {
+  white-space: nowrap;
+  display: flex;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  user-select: none;
+  font-size: 13px;
+  background-color: #353535;
+  height: 100%;
+  width: auto;
+  padding-right: 7px;
+  box-sizing: border-box;
+  border: 1px rgb(74, 74, 74) solid;
+}
+
+.monaco_editor_button:hover[enabled="true"] {
+  background-color: #444444;
+  cursor: pointer;
+}
+
+.monaco_editor_button[enabled="true"] {
+  color: white;
+}
+
+.monaco_editor_button[enabled="false"] {
+  color: rgb(136, 136, 136);
+}
+
+.material-symbols-outlined {
+  position: relative;
+  top: 2px;
+}
+
+.monaco_editor_button_label {
+  position: relative;
+  top: -9px;
+}
+
+#monaco_textareas_wrapper {
+  overflow: hidden;
+  height: calc(100% - 30px)
+}
+
+#monaco_editor_wrapper {
+  flex-grow: 1;
+  height: 90%;
+  resize: vertical;
+  overflow: hidden;
+  max-height: 90%;
+  min-height: 20%;
+  border-bottom: 1px rgb(85, 85, 85) solid;
+}
+
+#monaco_output_wrapper {
+  flex-grow: 1;
+  height: 100%;
+}
+
+#monaco_editor {
+  height: 100%;
+  width: 100%;
+}
+
+#monaco_output {
+  height: 100%;
+  width: 100%;
+}
