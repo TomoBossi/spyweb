@@ -168,7 +168,7 @@ document.getElementById("stop").addEventListener("click", () => stop());
 
 function test(rawCode, tests) {
   script = sanitizeCode(rawCode) + "\n" + tests;
-  run();
+  run(script);
 }
 
 function sanitizeCode(rawCode) {

@@ -15,9 +15,10 @@ function parsedErrorMessage(e, python) {
   let lineContent;
   
   const lines = e.message.split("\n");
+  console.log(e.message);
   for (let [i, line] of lines.entries()) {
     [_, file, lineNumber] = line.match(/File "(\S+)", line (\d+)/) || [];
-    [_, submodule] = line.match(/, in (\S+)"/) || [];
+    [_, submodule] = line.match(/, in (\S+)/) || [];
 
     if (lineNumber !== undefined) {
       if (file === "<exec>") {
