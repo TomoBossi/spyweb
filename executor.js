@@ -21,9 +21,9 @@ function parsedErrorMessage(e, python) {
         logging = true;
         lineContent = python.split("\n")[lineNumber - 1].trim();
         if (submodule === "<module>") {
-          message += "\t".repeat(depth) + `Error en la linea ${lineNumber} de este archivo: ${lineContent}\n`;
+          message += "\t".repeat(depth) + `Error en este archivo, linea ${lineNumber}: ${lineContent}\n`;
         } else {
-          message += "\t".repeat(depth) + `Error en la linea ${lineNumber} de este archivo, en "${submodule}": ${lineContent}\n`;
+          message += "\t".repeat(depth) + `Error en este archivo, linea ${lineNumber}, en "${submodule}": ${lineContent}\n`;
         }
       } else if (logging) {
         message += "\t".repeat(depth) + `Error en el archivo "${file}", en "${submodule}"\n`;
