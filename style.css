@@ -77,7 +77,7 @@ html, body {
 
 #monaco_editor_wrapper {
   flex-grow: 1;
-  height: 90%;
+  height: 84%;
   resize: vertical;
   overflow: hidden;
   max-height: 90%;

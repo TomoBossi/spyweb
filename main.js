@@ -27,7 +27,7 @@ d20 = dado(20)
 print(d20)
 `;
 
-const outputTextAreaPlaceholder = `Acá vas a ver las salidas o errores de la ejecución de tu código`;
+const outputTextAreaPlaceholder = `Acá vas a ver las salidas o errores de la ejecución de tu código\n`;
 
 let editor = monaco.editor.create(document.getElementById("monaco_editor"), {
   automaticLayout: true,
@@ -114,7 +114,12 @@ let executor;
 let running = false;
 let loadingExecutor = true;
 
-function initExecutor() {
+function initExecutor(reset=false) {
+  if (reset) {
+    setOutput("Ejecución interrumpida, reiniciando ejecutor...\n");
+  } else {
+    appendOutput("\nIniciando ejecutor...\n");
+  }
   document.getElementById("run").setAttribute("enabled", false);
   document.getElementById("stop").setAttribute("enabled", false);
   executor = new Worker("executor.js");
@@ -122,6 +127,11 @@ function initExecutor() {
   executor.onmessage = () => {
     loadingExecutor = false;
     document.getElementById("run").setAttribute("enabled", true);
+    if (reset) {
+      appendOutput("Ejecutor reiniciado con éxito :D\n");
+    } else {
+      appendOutput("Ejecutor iniciado con éxito :D\n");
+    }
   };
 }
 
@@ -140,7 +150,7 @@ function run(python) {
     runningToggle();
     executor.onmessage = (output) => {
       if (output.data) {
-        updateOutput(output.data);
+        setOutput(output.data);
       }
       runningToggle();
     };
@@ -150,15 +160,18 @@ function run(python) {
 function stop() {
   if (running) {
     executor.terminate();
-    updateOutput("Ejecución interrumpida\n");
     loadingExecutor = true;
     runningToggle();
-    initExecutor();
+    initExecutor(true);
   }
 }
 
-function updateOutput(output) {
+function setOutput(output) {
   outputTextArea.setValue(output);
+}
+
+function appendOutput(output) {
+  outputTextArea.setValue(outputTextArea.getValue() + output);
 }
 
 document.getElementById("run").addEventListener("click", () => run(editor.getValue()));
