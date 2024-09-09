@@ -90,6 +90,23 @@ const resizeObserver = new ResizeObserver((_) => resizeOutputTextArea());
 resizeObserver.observe(editorWrapper);
 resizeObserver.observe(document.body);
 
+// Editor-only querystring parameter
+function editorOnly() {
+  const params = new URLSearchParams(window.location.href.split("?").pop());
+  if (params.has("editor_only")) {
+    return params.get("editor_only");
+  }
+  return false;
+}
+
+const editorAreaWrapper = document.getElementById("monaco_wrapper");
+if (editorOnly()) {
+  editorAreaWrapper.style.maxWidth = "100%";
+  editorAreaWrapper.style.width = "100%";
+  editorAreaWrapper.style.resize = "none";
+  editorAreaWrapper.style.borderRight = "0px";
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 // Executor
@@ -159,9 +176,9 @@ function sanitizeCode(rawCode) {
   let lines = rawCode.split("\n");
   let n = lines.length;
   let lineIndex = 0;
-  let func_def_start_idx = 0;
-  let func_def_end_idx = 0;
-  let inside_func_def = false;
+  let defStartIndex = 0;
+  let defEndIndex = 0;
+  let insideDef = false;
 
   while (lineIndex < n) {
     let line = lines[lineIndex];
@@ -170,22 +187,22 @@ function sanitizeCode(rawCode) {
       result = result.concat(line);
     }
 
-    if (inside_func_def) {
+    if (insideDef) {
       if (line.includes(" return ") || lineIndex == n - 1) {
-        func_def_end_idx = lineIndex;
+        defEndIndex = lineIndex;
       }
 
       if (![" ", "\n"].includes(line[0]) || lineIndex == n - 1) {
-        inside_func_def = false;
+        insideDef = false;
         result = result.concat(
-          lines.slice(func_def_start_idx, func_def_end_idx + 1)
+          lines.slice(defStartIndex, defEndIndex + 1)
         );
         lineIndex--;
       }
     } else if (line.slice(0, 4) == "def ") {
-      func_def_start_idx = lineIndex;
-      func_def_end_idx = lineIndex;
-      inside_func_def = true;
+      defStartIndex = lineIndex;
+      defEndIndex = lineIndex;
+      insideDef = true;
     }
 
     lineIndex++;
