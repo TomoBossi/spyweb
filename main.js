@@ -34,7 +34,7 @@ let editor = monaco.editor.create(document.getElementById("monaco_editor"), {
   value: editorPlaceholder,
   language: "python",
   theme: "vs-dark",
-  fontSize: 14.5,
+  fontSize: 14.5
 });
 
 let outputTextArea = monaco.editor.create(
@@ -46,7 +46,7 @@ let outputTextArea = monaco.editor.create(
     fontSize: 14.5,
     readOnly: true,
     minimap: { enabled: false },
-    lineNumbers: "on", // (lineNumber) => "out" + lineNumber,
+    lineNumbers: "on" // (lineNumber) => "out" + lineNumber,
   }
 );
 
@@ -76,6 +76,9 @@ document.addEventListener("keydown", (event) => {
   if (event.ctrlKey && event.key === "s") {
     event.preventDefault();
     download();
+  } else if (event.key === "F5") {
+    event.preventDefault();
+    run(editor.getValue());
   }
 });
 
