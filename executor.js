@@ -13,14 +13,17 @@ function parsedErrorMessage(e, python) {
   let lineNumber;
   let submodule;
   let lineContent;
+  
   const lines = e.message.split("\n");
   for (let [i, line] of lines.entries()) {
-    [_, file, lineNumber, submodule] = line.match(/File "(\S+)", line (\d+), in (\S+)/) || [];
+    [_, file, lineNumber] = line.match(/File "(\S+)", line (\d+)/) || [];
+    [_, submodule] = line.match(/, in (\S+)"/) || [];
+
     if (lineNumber !== undefined) {
       if (file === "<exec>") {
         logging = true;
         lineContent = python.split("\n")[lineNumber - 1].trim();
-        if (submodule === "<module>") {
+        if (submodule === "<module>" || submodule === undefined) {
           message += "\t".repeat(depth) + `Error en este archivo, linea ${lineNumber}: ${lineContent}\n`;
         } else {
           message += "\t".repeat(depth) + `Error en este archivo, linea ${lineNumber}, en "${submodule}": ${lineContent}\n`;
@@ -28,13 +31,14 @@ function parsedErrorMessage(e, python) {
       } else if (logging) {
         message += "\t".repeat(depth) + `Error en el archivo "${file}", en "${submodule}"\n`;
       }
-      index = i;
 
       if (logging) {
+        index = i;
         depth += 1;
       }
     }
   }
+
   return message + "\n" + lines.slice(index + 1).join("\n");
 }
 
