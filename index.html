@@ -8,37 +8,38 @@
         <link data-name="vs/editor/editor.main" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.51.0/min/vs/editor/editor.main.min.css" rel="stylesheet">
     <body>
         <div id="monaco_wrapper">
-            <div class= "buttons_bar" id="monaco_editor_buttons_bar">
+            <div class="buttons_bar" id="monaco_editor_buttons_bar_wrapper">
+                <div id="monaco_editor_buttons_bar">
 
-                <div enabled="false" class="monaco_editor_button" id="run">
-                    <span class="material-symbols-outlined">
-                        play_arrow
-                    </span>
-                    <p class="monaco_editor_button_label">Ejecutar</p>
+                    <div enabled="false" class="monaco_editor_button" id="run">
+                        <span class="material-symbols-outlined">
+                            play_arrow
+                        </span>
+                        <p class="monaco_editor_button_label">Ejecutar</p>
+                    </div>
+    
+                    <div enabled="false" class="monaco_editor_button" id="stop">
+                        <span class="material-symbols-outlined">
+                            stop
+                        </span>
+                        <p class="monaco_editor_button_label">Interrumpir</p>
+                    </div>
+    
+                    <input type="file" id="load" accept=".py" hidden/>
+                    <label enabled="true" class="monaco_editor_button" for="load">
+                        <span class="material-symbols-outlined">
+                            upload
+                        </span>
+                        <p class="monaco_editor_button_label">Abrir</p>
+                    </label>
+    
+                    <div enabled="true" class="monaco_editor_button" id="download">
+                        <span class="material-symbols-outlined">
+                            download
+                        </span>
+                        <p class="monaco_editor_button_label">Guardar</p>
+                    </div>
                 </div>
-
-                <div enabled="false" class="monaco_editor_button" id="stop">
-                    <span class="material-symbols-outlined">
-                        stop
-                    </span>
-                    <p class="monaco_editor_button_label">Detener</p>
-                </div>
-
-                <input type="file" id="load" accept=".py" hidden/>
-                <label enabled="true" class="monaco_editor_button" for="load">
-                    <span class="material-symbols-outlined">
-                        upload
-                    </span>
-                    <p class="monaco_editor_button_label">Abrir</p>
-                </label>
-
-                <div enabled="true" class="monaco_editor_button" id="download">
-                    <span class="material-symbols-outlined">
-                        download
-                    </span>
-                    <p class="monaco_editor_button_label">Guardar</p>
-                </div>
-
             </div>
 
             <div id="monaco_textareas_wrapper">

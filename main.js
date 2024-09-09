@@ -133,10 +133,10 @@ function runningToggle() {
   running = !running;
 }
 
-function run() {
+function run(python) {
   outputTextArea.setValue("");
   if (!running && !loadingExecutor) {
-    executor.postMessage(editor.getValue());
+    executor.postMessage(python);
     runningToggle();
     executor.onmessage = (output) => {
       if (output.data) {
@@ -150,7 +150,7 @@ function run() {
 function stop() {
   if (running) {
     executor.terminate();
-    updateOutput("Ejecución detenida\n");
+    updateOutput("Ejecución interrumpida\n");
     loadingExecutor = true;
     runningToggle();
     initExecutor();
@@ -161,7 +161,7 @@ function updateOutput(output) {
   outputTextArea.setValue(output);
 }
 
-document.getElementById("run").addEventListener("click", () => run());
+document.getElementById("run").addEventListener("click", () => run(editor.getValue()));
 document.getElementById("stop").addEventListener("click", () => stop());
 
 ////////////////////////////////////////////////////////////////////////////////

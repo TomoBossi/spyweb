@@ -13,15 +13,23 @@ html, body {
   overflow: auto;
   max-width: 70%;
   min-width: 30%;
-  border-right: 1px rgb(84, 84, 84) solid;
+  box-sizing: border-box;
+  border-right: 2px rgb(85, 85, 85) solid;
 }
 
-#monaco_editor_buttons_bar {
-  display: flex;
+#monaco_editor_buttons_bar_wrapper {
   background-color: rgb(42, 42, 42);
   height: 30px;
   width: 100%;
   overflow: hidden;
+  box-sizing: border-box;
+  border-bottom: 1px rgb(85, 85, 85) solid;
+}
+
+#monaco_editor_buttons_bar {
+  display: flex;
+  height: 100%;
+  width: 480px;
 }
 
 .monaco_editor_button {
@@ -32,19 +40,20 @@ html, body {
   font-size: 13px;
   background-color: #353535;
   height: 100%;
-  width: auto;
+  /* width: auto; */
+  width: 25%;
   padding-right: 7px;
   box-sizing: border-box;
   border: 1px rgb(74, 74, 74) solid;
 }
 
 .monaco_editor_button:hover[enabled="true"] {
-  background-color: #444444;
+  background-color: rgb(74, 74, 74);
   cursor: pointer;
 }
 
 .monaco_editor_button[enabled="true"] {
-  color: white;
+  color: rgb(212, 212, 212);
 }
 
 .monaco_editor_button[enabled="false"] {
@@ -58,7 +67,7 @@ html, body {
 
 .monaco_editor_button_label {
   position: relative;
-  top: -9px;
+  top: -8.5px;
 }
 
 #monaco_textareas_wrapper {
