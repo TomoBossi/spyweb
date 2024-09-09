@@ -1,22 +1,23 @@
-// Pyodide @ https://pyodide.org/en/stable/usage/quickstart.html#setup
 importScripts('https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js');
 
 async function load() {
   self.pyodide = await loadPyodide();
 }
 
-function parsedErrorMessage(e) {
-  let lineNumber = '';
+function parsedErrorMessage(e, python) {
+  let message = '';
   let index = 0;
+  let lineNumber = 0;
   const lines = e.message.split('\n');
   for (let [i, line] of lines.entries()) {
     if (line.match('  File "<exec>"')) {
-      lineNumber = `Error on line ${line.split(',')[1].split(' ')[2]}\n`;
+      lineNumber = line.split(',')[1].split(' ')[2]
+      message = `Error on line ${lineNumber}: ${python.split('\n')[lineNumber-1].trim()}\n`;
       index = i; 
       break;
     }
   }
-  return lineNumber + lines.slice(index + 1).join('\n');
+  return message + lines.slice(index + 1).join('\n');
 }
 
 let pyodideReadyPromise = load();
@@ -38,7 +39,7 @@ self.onmessage = async (event) => {
         self.postMessage(output);
       }
     } catch (e) {
-      self.postMessage(output + parsedErrorMessage(e));
+      self.postMessage(output + parsedErrorMessage(e, python));
     }
   }
 };
