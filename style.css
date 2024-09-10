@@ -1,5 +1,40 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+section {
+  display: block;
+}
+
+body[dark="true"] {
+  --background-color: rgb(15, 15, 15);
+  --button-bar-color: rgb(42, 42, 42);
+  --button-color: rgb(53, 53, 53);
+  --button-enabled-font-color: rgb(212, 212, 212);
+  --button-disabled-font-color: rgb(136, 136, 136);;
+  --button-hover-color: rgb(74, 74, 74);;
+  --border-color: rgb(85, 85, 85);
+  --toggle-color: rgb(180, 180, 180);
+}
+
+body[dark="false"] {
+  --background-color: rgb(255, 255, 255);
+  --button-bar-color: rgb(240, 240, 240);
+  --button-color: rgb(228, 228, 228);
+  --button-enabled-font-color: rgb(50, 50, 50);
+  --button-disabled-font-color: rgb(143, 143, 143);;
+  --button-hover-color: rgb(202, 202, 202);;
+  --border-color: rgb(132, 132, 132);
+  --toggle-color: rgb(99, 99, 99);
+}
+
 html, body {
-  background-color: rgb(15, 15, 15);
+  background-color: var(--background-color);
   margin: 0;
   padding: 0;
   height: 100%;
@@ -7,23 +42,23 @@ html, body {
 }
 
 #monaco_wrapper {
-  background-color: #1e1e1e;
+  background-color: var(--background-color);
   height: 100%;
   resize: horizontal;
   overflow: auto;
   max-width: 70%;
   min-width: 30%;
   box-sizing: border-box;
-  border-right: 2px rgb(85, 85, 85) solid;
+  border-right: 2px var(--border-color) solid;
 }
 
 #monaco_editor_buttons_bar_wrapper {
-  background-color: rgb(42, 42, 42);
+  background-color: var(--button-bar-color);
   height: 30px;
   width: 100%;
   overflow: hidden;
   box-sizing: border-box;
-  border-bottom: 1px rgb(85, 85, 85) solid;
+  border-bottom: 1px var(--border-color) solid;
 }
 
 #monaco_editor_buttons_bar {
@@ -38,26 +73,29 @@ html, body {
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   user-select: none;
   font-size: 13px;
-  background-color: #353535;
+  background-color: var(--button-color);
   height: 100%;
-  /* width: auto; */
   width: 25%;
   padding-right: 7px;
   box-sizing: border-box;
-  border: 1px rgb(74, 74, 74) solid;
+  border: 1px var(--border-color) solid;
+}
+
+.material-symbols-outlined {
+  user-select: none;
 }
 
 .monaco_editor_button:hover[enabled="true"] {
-  background-color: rgb(74, 74, 74);
+  background-color: var(--button-hover-color);
   cursor: pointer;
 }
 
 .monaco_editor_button[enabled="true"] {
-  color: rgb(212, 212, 212);
+  color: var(--button-enabled-font-color);
 }
 
 .monaco_editor_button[enabled="false"] {
-  color: rgb(136, 136, 136);
+  color: var(--button-disabled-font-color);
 }
 
 .material-symbols-outlined {
@@ -67,7 +105,7 @@ html, body {
 
 .monaco_editor_button_label {
   position: relative;
-  top: -8.5px;
+  top: 4px;
 }
 
 #monaco_textareas_wrapper {
@@ -82,7 +120,7 @@ html, body {
   overflow: hidden;
   max-height: 90%;
   min-height: 20%;
-  border-bottom: 1px rgb(85, 85, 85) solid;
+  border-bottom: 1px var(--border-color) solid;
 }
 
 #monaco_output_wrapper {
@@ -98,4 +136,31 @@ html, body {
 #monaco_output {
   height: 100%;
   width: 100%;
+}
+
+#display_toggle {
+  width: 30px;
+  height: 30px;
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
+#display_toggle:hover {
+  cursor: pointer;
+}
+
+#dark, #light {
+  margin-top: 2px;
+  margin-left: 3px;
+  transform: scale(0.8);
+}
+
+#dark {
+  display: none;
+  color: var(--toggle-color);
+}
+
+#light {
+  color: var(--toggle-color);
 }

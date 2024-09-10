@@ -16,6 +16,15 @@ document.addEventListener("keydown", (event) => {
 
 });
 
+document.getElementById("load").addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    let reader = new FileReader();
+    reader.onload = (e) => editor.setInput(e.target.result);
+    reader.readAsText(file);
+  }
+});
+
 function download() {
   const blob = new Blob([editor.getInput()], { type: "text/x-python" });
   const url = URL.createObjectURL(blob);
@@ -28,16 +37,18 @@ function download() {
   URL.revokeObjectURL(url);
 }
 
-document.getElementById("load").addEventListener("change", (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    let reader = new FileReader();
-    reader.onload = (e) => editor.setInput(e.target.result);
-    reader.readAsText(file);
-  }
-});
+function displayToggle() {
+  const iconDark = document.getElementById("dark");
+  const iconLight = document.getElementById("light");
+  iconDark.style.display = editor.dark ? "block" : "none";
+  iconLight.style.display = editor.dark ? "none" : "block";
+  document.body.setAttribute("dark", editor.dark ? "false" : "true");
+  editor.displayToggle();
+}
 
 document.getElementById("download").addEventListener("click", () => download());
+
+document.getElementById("display_toggle").addEventListener("click", () => displayToggle());
 
 document.getElementById("run").addEventListener("click", () => executor.run());
 

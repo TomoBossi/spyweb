@@ -26,6 +26,8 @@ d20 = dado(20)
 print(d20)
 `;
 
+let dark = true;
+
 const outputTextAreaPlaceholder = `Acá vas a ver las salidas o errores de la ejecución de tu código\n`;
 
 let editorTextArea = monaco.editor.create(document.getElementById("monaco_editor"), {
@@ -87,4 +89,9 @@ function appendOutput(output) {
   setOutput(outputTextArea.getValue() + output);
 }
 
-export {setInput, getInput, setOutput, appendOutput}
+function displayToggle() {
+  monaco.editor.setTheme(dark ? "vs" : "vs-dark");
+  dark = !dark;
+}
+
+export {setInput, getInput, setOutput, appendOutput, displayToggle, dark}
