@@ -72,4 +72,8 @@ function displayToggle() {
   dark = !dark;
 }
 
-export {setInput, getInput, setOutput, appendOutput, displayToggle, dark}
+function scrollOutput() {
+  outputTextArea.revealLine(outputTextArea.getModel().getLineCount());
+}
+
+export {setInput, getInput, setOutput, appendOutput, scrollOutput, displayToggle, dark}

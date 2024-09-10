@@ -1,4 +1,4 @@
-import {getInput, setOutput, appendOutput} from "./editor.js";
+import {getInput, setOutput, appendOutput, scrollOutput} from "./editor.js";
 
 let executor;
 let running = false;
@@ -35,18 +35,22 @@ function runningToggle() {
   running = !running;
 }
 
-function onMessageDefault(output) {
+function onMessageDefault(output, duration) {
   if (output.data) {
     setOutput(output.data);
+    appendOutput(`\nEjecutado en ${duration.toFixed(5)} segundos\n`);
+    scrollOutput();
   }
 }
 
 function run(python = getInput(), onMessage = onMessageDefault) {
+  let duration = Date.now();
   if (!running && !loadingExecutor) {
     setOutput("");
     runningToggle();
     executor.onmessage = (output) => {
-      onMessage(output);
+      duration = (Date.now() - duration)/1000;
+      onMessage(output, duration);
       runningToggle();
     }
     executor.postMessage(python);
