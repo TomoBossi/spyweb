@@ -6,7 +6,7 @@ document.addEventListener("keydown", (event) => {
   
   if (event.ctrlKey && event.key === "s") {
     event.preventDefault();
-    editor.download();
+    download();
   } 
   
   else if (event.key === "F5") {
