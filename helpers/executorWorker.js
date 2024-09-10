@@ -1,5 +1,6 @@
 importScripts("https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js");
 
+const maxOutputSize = 1000;
 let pyodideReadyPromise = load();
 
 async function load() {
@@ -16,7 +17,6 @@ function parsedErrorMessage(e, python) {
   let submodule;
   let lineContent;
   const lines = e.message.split("\n");
-  console.log(e.message);
   for (let [i, line] of lines.entries()) {
     [_, file, lineNumber] = line.match(/File "(\S+)", line (\d+)/) || [];
     [_, submodule] = line.match(/, in (\S+)/) || [];
@@ -45,20 +45,20 @@ self.onmessage = async (event) => {
   await pyodideReadyPromise;
   const python = event.data;
   if (python === null) {
-    self.postMessage(null);
+    self.postMessage(null); // Dummy msg to notify main thread
   } else {
-    let output = "";
-    self.pyodide.globals.set("print", (s) => (output += String(s) + "\n"));
+    let output = [];
+    self.pyodide.globals.set("print", (s) => {
+      output.push(...(String(s).split("\n")));
+      output = output.slice(-maxOutputSize);
+      return output;
+    });
     try {
       await pyodide.loadPackagesFromImports(python);
-      const { _, error } = await pyodide.runPythonAsync(python);
-      if (error) {
-        self.postMessage(output + error);
-      } else {
-        self.postMessage(output);
-      }
+      await pyodide.runPythonAsync(python);
+      self.postMessage(output.join("\n") + "\n");
     } catch (e) {
-      self.postMessage(output + parsedErrorMessage(e, python));
+      self.postMessage(output.join("\n") + "\n" + parsedErrorMessage(e, python));
     }
   }
 };

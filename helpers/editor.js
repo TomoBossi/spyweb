@@ -51,28 +51,6 @@ const outputTextArea = monaco.editor.create(
   }
 );
 
-const editorWrapper = document.getElementById("monaco_editor_wrapper");
-const outputWrapper = document.getElementById("monaco_output_wrapper");
-function resizeOutputTextArea() {
-  outputWrapper.style.height = (window.innerHeight - editorWrapper.getBoundingClientRect().bottom) + 'px';
-}
-const resizeObserver = new ResizeObserver((_) => resizeOutputTextArea());
-resizeObserver.observe(editorWrapper);
-resizeObserver.observe(document.body);
-
-function editorOnly() {
-  const params = new URLSearchParams(window.location.href.split("?").pop());
-  return params.has("editor_only") && params.get("editor_only") === "true";
-}
-
-const editorAreaWrapper = document.getElementById("monaco_wrapper");
-if (editorOnly()) {
-  editorAreaWrapper.style.maxWidth = "100%";
-  editorAreaWrapper.style.width = "100%";
-  editorAreaWrapper.style.resize = "none";
-  editorAreaWrapper.style.borderRight = "0px";
-}
-
 function getInput() {
   return editorTextArea.getValue();
 }
