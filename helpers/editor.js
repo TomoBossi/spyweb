@@ -34,14 +34,13 @@ const editorOnlyHorizontal = editorOnly && params.get("editor_only") === "horizo
 const editorWrapper = document.getElementById("monaco_editor_wrapper");
 const outputWrapper = document.getElementById("monaco_output_wrapper");
 const editorAreaWrapper = document.getElementById("monaco_wrapper");
-const editorTextAreasWrapper = document.getElementById("monaco_textareas_wrapper");
 
-let dark = true;
+let dark = !params.has("dark_mode") || params.get("dark_mode") === "true";
+document.body.setAttribute("dark", dark);
 
 let editorTextArea = monaco.editor.create(
   document.getElementById("monaco_editor"),
   {
-    // automaticLayout: true,
     value: editorPlaceholder,
     language: "python",
     theme: dark ? "vs-dark" : "vs",
@@ -52,7 +51,6 @@ let editorTextArea = monaco.editor.create(
 const outputTextArea = monaco.editor.create(
   document.getElementById("monaco_output"),
   {
-    // automaticLayout: true,
     value: outputTextAreaPlaceholder,
     theme: dark ? "vs-dark" : "vs",
     fontSize: 14.5,
@@ -124,7 +122,7 @@ const resizeObserver = new ResizeObserver((_) =>
 resizeObserver.observe(editorWrapper);
 resizeObserver.observe(document.body);
 
-if (editorOnly) {
+if (editorOnly) { // TODO migrate as HTML Attributes + CSS variables with minimal Js
   editorAreaWrapper.style.maxWidth = "100%";
   editorAreaWrapper.style.width = "100%";
   editorAreaWrapper.style.resize = "none";

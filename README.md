@@ -4,4 +4,4 @@ https://tomobossi.github.io/spyweb
 
 https://tomobossi.github.io/spyweb/?editor_only=horizontal
 
-https://tomobossi.github.io/spyweb/?editor_only=vertical
+https://tomobossi.github.io/spyweb/?editor_only=vertical&dark_mode=false

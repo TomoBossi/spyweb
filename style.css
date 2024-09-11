@@ -20,6 +20,8 @@ body[dark="true"] {
   --button-hover-color: rgb(74, 74, 74);;
   --border-color: rgb(85, 85, 85);
   --toggle-color: rgb(180, 180, 180);
+  --display-light-mode-icon: block;
+  --display-dark-mode-icon: none;
 }
 
 body[dark="false"] {
@@ -31,6 +33,8 @@ body[dark="false"] {
   --button-hover-color: rgb(202, 202, 202);;
   --border-color: rgb(132, 132, 132);
   --toggle-color: rgb(99, 99, 99);
+  --display-light-mode-icon: none;
+  --display-dark-mode-icon: block;
 }
 
 html, body {
@@ -155,10 +159,11 @@ html, body {
 }
 
 #dark {
-  display: none;
+  display: var(--display-dark-mode-icon);
   color: var(--toggle-color);
 }
 
 #light {
+  display: var(--display-light-mode-icon);
   color: var(--toggle-color);
 }
