@@ -35,7 +35,7 @@ const editorWrapper = document.getElementById("monaco_editor_wrapper");
 const outputWrapper = document.getElementById("monaco_output_wrapper");
 const editorAreaWrapper = document.getElementById("monaco_wrapper");
 
-let dark = !params.has("dark_mode") || params.get("dark_mode") === "true";
+let dark = !(params.has("light_mode") && params.get("light_mode") === "true");
 document.body.setAttribute("dark", dark);
 
 let editorTextArea = monaco.editor.create(
