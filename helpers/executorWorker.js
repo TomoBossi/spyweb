@@ -25,12 +25,18 @@ function parsedErrorMessage(e, python) {
         logging = true;
         lineContent = python.split("\n")[lineNumber - 1].trim();
         if (submodule === "<module>" || submodule === undefined) {
-          message += "\t".repeat(depth) + `Error en este archivo, linea ${lineNumber}: ${lineContent}\n`;
+          message +=
+            "\t".repeat(depth) +
+            `Error en este archivo, linea ${lineNumber}: ${lineContent}\n`;
         } else {
-          message += "\t".repeat(depth) + `Error en este archivo, linea ${lineNumber}, en "${submodule}": ${lineContent}\n`;
+          message +=
+            "\t".repeat(depth) +
+            `Error en este archivo, linea ${lineNumber}, en "${submodule}": ${lineContent}\n`;
         }
       } else if (logging) {
-        message += "\t".repeat(depth) + `Error en el archivo "${file}", en "${submodule}"\n`;
+        message +=
+          "\t".repeat(depth) +
+          `Error en el archivo "${file}", en "${submodule}"\n`;
       }
       if (logging) {
         index = i;
@@ -49,7 +55,7 @@ self.onmessage = async (event) => {
   } else {
     let output = [];
     self.pyodide.globals.set("print", (s) => {
-      output.push(...(String(s).split("\n")));
+      output.push(...String(s).split("\n"));
       output = output.slice(-maxOutputSize);
       return output;
     });
@@ -58,7 +64,9 @@ self.onmessage = async (event) => {
       await pyodide.runPythonAsync(python);
       self.postMessage(output.join("\n") + "\n");
     } catch (e) {
-      self.postMessage(output.join("\n") + "\n" + parsedErrorMessage(e, python));
+      self.postMessage(
+        output.join("\n") + "\n" + parsedErrorMessage(e, python)
+      );
     }
   }
 };

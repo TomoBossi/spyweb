@@ -2,4 +2,6 @@ Editor web de código Python + herramienta de tests automatizados para Pensamien
 
 https://tomobossi.github.io/spyweb
 
-https://tomobossi.github.io/spyweb/?editor_only=true
+https://tomobossi.github.io/spyweb/?editor_only=horizontal
+
+https://tomobossi.github.io/spyweb/?editor_only=vertical

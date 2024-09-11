@@ -1,23 +1,21 @@
-import {getInput, setOutput, appendOutput, scrollOutput} from "./editor.js";
+import { getInput, setOutput, appendOutput, scrollOutput } from "./editor.js";
 
 let executor;
 let running = false;
 let loadingExecutor = true;
 
-function initExecutor(reset=false) {
+function initExecutor(reset = false) {
   if (reset) {
     setOutput("Ejecución interrumpida, reiniciando ejecutor...\n");
   } else {
     appendOutput("\nIniciando ejecutor...\n");
   }
-
   document.getElementById("run").setAttribute("enabled", false);
   document.getElementById("stop").setAttribute("enabled", false);
   executor = new Worker("./helpers/executorWorker.js");
   executor.onmessage = () => {
     loadingExecutor = false;
     document.getElementById("run").setAttribute("enabled", true);
-
     if (reset) {
       appendOutput("Ejecutor reiniciado con éxito :D\n");
     } else {
@@ -49,10 +47,10 @@ function run(python = getInput(), onMessage = onMessageDefault) {
     setOutput("");
     runningToggle();
     executor.onmessage = (output) => {
-      duration = (Date.now() - duration)/1000;
+      duration = (Date.now() - duration) / 1000;
       onMessage(output, duration);
       runningToggle();
-    }
+    };
     executor.postMessage(python);
   }
 }
@@ -66,4 +64,4 @@ function stop() {
   }
 }
 
-export {run, stop};
+export { run, stop };

@@ -1,5 +1,5 @@
 function isLastLine(i, n) {
-  return i === n-1;
+  return i === n - 1;
 }
 
 function isNotIndented(line) {
@@ -34,7 +34,11 @@ function sanitize(python) {
     if (insideDef) {
       if ((isNotIndented(line) && isNotEmpty(line)) || isLastLine(i, n)) {
         insideDef = false;
-        result += lines.slice(defStartIndex, i + isLastLine(i, n)).filter((line) => isNotEmpty(line.trim())).join("\n") + "\n";
+        result +=
+          lines
+            .slice(defStartIndex, i + isLastLine(i, n))
+            .filter((line) => isNotEmpty(line.trim()))
+            .join("\n") + "\n";
         i--;
       }
     } else if (isDef(line)) {
@@ -46,4 +50,4 @@ function sanitize(python) {
   return result;
 }
 
-export {sanitize};
+export { sanitize };
