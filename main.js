@@ -2,6 +2,8 @@ import("./helpers/editor.js").then((m) => (editor = m));
 import("./helpers/executor.js").then((m) => (executor = m));
 import("./helpers/sanitizer.js").then((m) => (sanitizer = m));
 
+// Miscellaneous event handling
+
 document.addEventListener("keydown", (event) => {
   if (event.ctrlKey && event.key === "s") {
     event.preventDefault();

@@ -50,4 +50,8 @@ function sanitize(python) {
   return result;
 }
 
-export { sanitize };
+function getFunctionSignatures(python) {
+  // TODO
+}
+
+export { sanitize, getFunctionSignatures };

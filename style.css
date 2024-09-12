@@ -1,3 +1,5 @@
+/* CSS Reset */
+
 * {
   margin: 0;
   padding: 0;
@@ -10,6 +12,8 @@
 section {
   display: block;
 }
+
+/* Color theme variables */
 
 body[dark="true"] {
   --background-color: rgb(30, 30, 30);
@@ -37,6 +41,92 @@ body[dark="false"] {
   --display-dark-mode-icon: block;
 }
 
+/* Layout variables */
+
+body[editor_only="false"] {
+  --editor-text-areas-wrapper-resize: horizontal;
+  --editor-text-areas-wrapper-width: 70%;
+  --editor-text-areas-wrapper-max-width: 70%;
+  --editor-text-areas-wrapper-min-width: 30%;
+  --editor-text-areas-wrapper-min-width: 30%;
+  --editor-text-areas-wrapper-border-right: 2px var(--border-color) solid;
+  --editor-wrapper-width: 100%;
+  --editor-wrapper-max-width: 100%;
+  --editor-wrapper-min-width: 100%;
+  --editor-wrapper-height: 90%;
+  --editor-wrapper-max-height: 90%;
+  --editor-wrapper-min-height: 20%;
+  --editor-wrapper-resize: vertical;
+  --editor-wrapper-display: block;
+  --editor-wrapper-float: none;
+  --editor-wrapper-border-right: 0px;
+  --editor-wrapper-border-bottom: 1px var(--border-color) solid;
+  --output-wrapper-width: 100%;
+  --output-wrapper-max-width: 100%;
+  --output-wrapper-min-width: 100%;
+  --output-wrapper-height: 10%;
+  --output-wrapper-max-height: 100%;
+  --output-wrapper-min-height: 0%;
+  --output-wrapper-display: block;
+  --output-wrapper-float: none;
+}
+
+body[editor_only="true"][editor_only_mode="horizontal"] {
+  --editor-text-areas-wrapper-resize: none;
+  --editor-text-areas-wrapper-width: 100%;
+  --editor-text-areas-wrapper-max-width: 100%;
+  --editor-text-areas-wrapper-min-width: 100%;
+  --editor-text-areas-wrapper-border-right: 0px;
+  --editor-wrapper-width: 60%;
+  --editor-wrapper-max-width: 100%;
+  --editor-wrapper-min-width: 0%;
+  --editor-wrapper-height: 100%;
+  --editor-wrapper-max-height: 100%;
+  --editor-wrapper-min-height: 100%;
+  --editor-wrapper-resize: horizontal;
+  --editor-wrapper-display: inline-block;
+  --editor-wrapper-float: left;
+  --editor-wrapper-border-right: 1px var(--border-color) solid;
+  --editor-wrapper-border-bottom: 0px;
+  --output-wrapper-width: 40%;
+  --output-wrapper-max-width: 100%;
+  --output-wrapper-min-width: 0%;
+  --output-wrapper-height: 100%;
+  --output-wrapper-max-height: 100%;
+  --output-wrapper-min-height: 100%;
+  --output-wrapper-display: inline-block;
+  --output-wrapper-float: right;
+}
+
+body[editor_only="true"][editor_only_mode="vertical"] {
+  --editor-text-areas-wrapper-resize: none;
+  --editor-text-areas-wrapper-width: 100%;
+  --editor-text-areas-wrapper-max-width: 100%;
+  --editor-text-areas-wrapper-min-width: 100%;
+  --editor-text-areas-wrapper-border-right: 0px;
+  --editor-wrapper-width: 100%;
+  --editor-wrapper-max-width: 100%;
+  --editor-wrapper-min-width: 100%;
+  --editor-wrapper-height: 90%;
+  --editor-wrapper-max-height: 90%;
+  --editor-wrapper-min-height: 20%;
+  --editor-wrapper-resize: vertical;
+  --editor-wrapper-display: block;
+  --editor-wrapper-float: none;
+  --editor-wrapper-border-right: 0px;
+  --editor-wrapper-border-bottom: 1px var(--border-color) solid;
+  --output-wrapper-width: 100%;
+  --output-wrapper-max-width: 100%;
+  --output-wrapper-min-width: 100%;
+  --output-wrapper-height: 10%;
+  --output-wrapper-max-height: 100%;
+  --output-wrapper-min-height: 0%;
+  --output-wrapper-display: block;
+  --output-wrapper-float: none;
+}
+
+/* CSS Start */
+
 html, body {
   background-color: var(--background-color);
   margin: 0;
@@ -46,14 +136,43 @@ html, body {
 }
 
 #monaco_wrapper {
-  background-color: var(--background-color);
   height: 100%;
-  resize: horizontal;
   overflow: auto;
-  max-width: 70%;
-  min-width: 30%;
   box-sizing: border-box;
-  border-right: 2px var(--border-color) solid;
+  background-color: var(--background-color);
+  resize: var(--editor-text-areas-wrapper-resize);
+  width: var(--editor-text-areas-wrapper-width);
+  max-width: var(--editor-text-areas-wrapper-max-width);
+  min-width: var(--editor-text-areas-wrapper-min-width);
+  border-right: var(--editor-text-areas-wrapper-border-right);
+}
+
+#monaco_editor_wrapper {
+  flex-grow: 1;
+  overflow: hidden;
+  border-right: var(--editor-wrapper-border-right);
+  border-bottom: var(--editor-wrapper-border-bottom);
+  float: var(--editor-wrapper-float);
+  display: var(--editor-wrapper-display);
+  height: var(--editor-wrapper-height);
+  width: var(--editor-wrapper-width);
+  resize: var(--editor-wrapper-resize);
+  max-width: var(--editor-wrapper-max-width);
+  min-width: var(--editor-wrapper-min-width);
+  max-height: var(--editor-wrapper-max-height);
+  min-height: var(--editor-wrapper-min-height);
+}
+
+#monaco_output_wrapper {
+  flex-grow: 1;
+  float: var(--output-wrapper-float);
+  display: var(--output-wrapper-display);
+  height: var(--output-wrapper-height);
+  width: var(--output-wrapper-width);
+  max-width: var(--output-wrapper-max-width);
+  min-width: var(--output-wrapper-min-width);
+  max-height: var(--output-wrapper-max-height);
+  min-height: var(--output-wrapper-min-height);
 }
 
 #monaco_editor_buttons_bar_wrapper {
@@ -108,26 +227,9 @@ html, body {
   top: 2px;
 }
 
-
-
 #monaco_textareas_wrapper {
   overflow: hidden;
   height: calc(100% - 30px)
-}
-
-#monaco_editor_wrapper {
-  flex-grow: 1;
-  height: 84%;
-  resize: vertical;
-  overflow: hidden;
-  max-height: 90%;
-  min-height: 20%;
-  border-bottom: 1px var(--border-color) solid;
-}
-
-#monaco_output_wrapper {
-  flex-grow: 1;
-  height: 100%;
 }
 
 #monaco_editor {

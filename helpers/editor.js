@@ -37,14 +37,16 @@ const editorAreaWrapper = document.getElementById("monaco_wrapper");
 
 let dark = !(params.has("light_mode") && params.get("light_mode") === "true");
 document.body.setAttribute("dark", dark);
+document.body.setAttribute("editor_only", editorOnly);
+document.body.setAttribute("editor_only_mode", editorOnlyHorizontal ? "horizontal" : "vertical");
 
 let editorTextArea = monaco.editor.create(
   document.getElementById("monaco_editor"),
   {
     value: editorPlaceholder,
-    language: "python",
     theme: dark ? "vs-dark" : "vs",
     fontSize: 14.5,
+    language: "python"
   }
 );
 
@@ -56,7 +58,7 @@ const outputTextArea = monaco.editor.create(
     fontSize: 14.5,
     readOnly: true,
     minimap: { enabled: false },
-    lineNumbers: "on", // (lineNumber) => "out" + lineNumber,
+    lineNumbers: "on"
   }
 );
 
@@ -121,32 +123,6 @@ const resizeObserver = new ResizeObserver((_) =>
 
 resizeObserver.observe(editorWrapper);
 resizeObserver.observe(document.body);
-
-if (editorOnly) { // TODO migrate as HTML Attributes + CSS variables with minimal Js
-  editorAreaWrapper.style.maxWidth = "100%";
-  editorAreaWrapper.style.width = "100%";
-  editorAreaWrapper.style.resize = "none";
-  editorAreaWrapper.style.borderRight = "0px";
-  if (editorOnlyHorizontal) {
-    editorWrapper.style.resize = "horizontal";
-    editorWrapper.style.display = "inline-block";
-    editorWrapper.style.float = "left";
-    editorWrapper.style.maxHeight = "100%";
-    editorWrapper.style.height = "100%";
-    editorWrapper.style.maxWidth = "100%";
-    editorWrapper.style.minWidth = "0%";
-    editorWrapper.style.width = "60%";
-    editorWrapper.style.borderRight = "1px var(--border-color) solid";
-    outputWrapper.style.display = "inline-block";
-    outputWrapper.style.float = "right";
-    outputWrapper.style.maxHeight = "100%";
-    outputWrapper.style.height = "100%";
-    outputWrapper.style.maxWidth = "100%";
-    outputWrapper.style.minWidth = "0%";
-    outputWrapper.style.width = "40%";
-    resizeHorizontal();
-  }
-}
 
 export {
   setInput,
