@@ -35,19 +35,12 @@ function download() {
   URL.revokeObjectURL(url);
 }
 
-function displayToggle() {
-  const iconDark = document.getElementById("dark");
-  const iconLight = document.getElementById("light");
-  iconDark.style.display = editor.dark ? "block" : "none";
-  iconLight.style.display = editor.dark ? "none" : "block";
-  document.body.setAttribute("dark", editor.dark ? "false" : "true");
-  editor.displayToggle(); // editor.dark = !editor.dark
-}
-
 document.getElementById("download").addEventListener("click", () => download());
 
-document.getElementById("display_toggle").addEventListener("click", () => displayToggle());
+document.getElementById("display_toggle").addEventListener("click", () => editor.displayToggle());
 
 document.getElementById("run").addEventListener("click", () => executor.run());
 
 document.getElementById("stop").addEventListener("click", () => executor.stop());
+
+document.getElementById("layout_toggle").addEventListener("click", () => editor.layoutToggle());

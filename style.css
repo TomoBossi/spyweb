@@ -69,6 +69,9 @@ body[editor_only="false"] {
   --output-wrapper-min-height: 0%;
   --output-wrapper-display: block;
   --output-wrapper-float: none;
+  --display-default-layout-icon: block;
+  --display-horizontal-layout-icon: none;
+  --display-vertical-layout-icon: none;
 }
 
 body[editor_only="true"][editor_only_mode="horizontal"] {
@@ -96,6 +99,9 @@ body[editor_only="true"][editor_only_mode="horizontal"] {
   --output-wrapper-min-height: 100%;
   --output-wrapper-display: inline-block;
   --output-wrapper-float: right;
+  --display-default-layout-icon: none;
+  --display-horizontal-layout-icon: block;
+  --display-vertical-layout-icon: none;
 }
 
 body[editor_only="true"][editor_only_mode="vertical"] {
@@ -123,6 +129,9 @@ body[editor_only="true"][editor_only_mode="vertical"] {
   --output-wrapper-min-height: 0%;
   --output-wrapper-display: block;
   --output-wrapper-float: none;
+  --display-default-layout-icon: none;
+  --display-horizontal-layout-icon: none;
+  --display-vertical-layout-icon: block;
 }
 
 /* CSS Start */
@@ -246,26 +255,53 @@ html, body {
   width: 30px;
   height: 30px;
   position: fixed;
-  top: 0;
-  right: 0;
+  top: 0px;
+  right: 0px;
+  color: var(--toggle-color);
+  align-items: center;
   line-height: 30px;
 }
 
-#display_toggle:hover {
+#layout_toggle {
+  width: 30px;
+  height: 30px;
+  position: fixed;
+  top: 0px;
+  right: 30px;
+  color: var(--toggle-color);
+  align-items: center;
+  line-height: 30px;
+}
+
+#display_toggle:hover, #layout_toggle:hover {
   cursor: pointer;
 }
 
-#dark, #light {
-  margin-left: 3px;
+#dark, #light, #default_layout, #horizontal_layout, #vertical_layout {
   transform: scale(0.8);
+}
+
+#default_layout {
+  transform: scale(-0.8, 0.8);
+  padding-left: 6px;
 }
 
 #dark {
   display: var(--display-dark-mode-icon);
-  color: var(--toggle-color);
 }
 
 #light {
   display: var(--display-light-mode-icon);
-  color: var(--toggle-color);
+}
+
+#default_layout {
+  display: var(--display-default-layout-icon);
+}
+
+#horizontal_layout {
+  display: var(--display-horizontal-layout-icon);
+}
+
+#vertical_layout {
+  display: var(--display-vertical-layout-icon);
 }

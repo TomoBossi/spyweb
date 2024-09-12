@@ -29,16 +29,54 @@ print(d20)
 const outputTextAreaPlaceholder = `Acá vas a ver las salidas o errores de la ejecución\n`;
 
 const params = new URLSearchParams(window.location.href.split("?").pop());
-const editorOnly = params.has("editor_only");
-const editorOnlyHorizontal = editorOnly && params.get("editor_only") === "horizontal";
 const editorWrapper = document.getElementById("monaco_editor_wrapper");
 const outputWrapper = document.getElementById("monaco_output_wrapper");
 const editorAreaWrapper = document.getElementById("monaco_wrapper");
 
 let dark = !(params.has("light_mode") && params.get("light_mode") === "true");
 document.body.setAttribute("dark", dark);
-document.body.setAttribute("editor_only", editorOnly);
-document.body.setAttribute("editor_only_mode", editorOnlyHorizontal ? "horizontal" : "vertical");
+
+document.body.setAttribute(
+  "editor_only", 
+  params.has("editor_only") && (
+    params.get("editor_only") === "horizontal" ||
+    params.get("editor_only") === "vertical"
+  )
+);
+
+document.body.setAttribute(
+  "editor_only_mode", 
+  params.has("editor_only")? 
+    params.get("editor_only") === "horizontal"?
+      "horizontal":
+      params.get("editor_only") === "vertical"?
+        "vertical":
+        "default":
+    "default"
+);
+
+const layoutCycle = [
+  { editorOnly: "false", editorOnlyMode: "default", resize: resizeEditorDefaultLayout },
+  { editorOnly: "true", editorOnlyMode: "horizontal", resize: resizeEditorOnlyHorizontal },
+  { editorOnly: "true", editorOnlyMode: "vertical", resize: resizeEditorOnlyVertical },
+];
+
+let currentLayoutIndex;
+for (let [i, layout] of layoutCycle.entries()) {
+  if (
+    layout.editorOnly === document.body.getAttribute("editor_only") &&
+    layout.editorOnlyMode === document.body.getAttribute("editor_only_mode")
+  ) {
+    currentLayoutIndex = i;
+    break;
+  }
+}
+
+function layoutToggle() {
+  currentLayoutIndex = (currentLayoutIndex + 1) % layoutCycle.length;
+  document.body.setAttribute("editor_only", layoutCycle[currentLayoutIndex].editorOnly);
+  document.body.setAttribute("editor_only_mode", layoutCycle[currentLayoutIndex].editorOnlyMode);
+}
 
 let editorTextArea = monaco.editor.create(
   document.getElementById("monaco_editor"),
@@ -79,6 +117,7 @@ function appendOutput(output) {
 }
 
 function displayToggle() {
+  document.body.setAttribute("dark", dark ? "false" : "true");
   monaco.editor.setTheme(dark ? "vs" : "vs-dark");
   dark = !dark;
 }
@@ -115,7 +154,7 @@ function resizeEditorOnlyHorizontal() {
   outputWrapper.style.width = outputWrapperWidth + "px";
 }
 
-function resizeDefaultLayout() {
+function resizeEditorDefaultLayout() {
   const editorAreaWrapperWidth = editorAreaWrapper.getBoundingClientRect().width;
   const editorWrapperHeight = editorWrapper.getBoundingClientRect().height;
   const editorAreaWrapperHeight = editorAreaWrapper.getBoundingClientRect().height;
@@ -126,11 +165,7 @@ function resizeDefaultLayout() {
 }
 
 function resizeEditor() {
-  editorOnly 
-  ? editorOnlyHorizontal
-    ? resizeEditorOnlyHorizontal()
-    : resizeEditorOnlyVertical()
-  : resizeDefaultLayout();
+  layoutCycle[currentLayoutIndex].resize();
 }
 
 const resizeObserver = new ResizeObserver((_) => resizeEditor());
@@ -145,5 +180,5 @@ export {
   appendOutput,
   scrollOutput,
   displayToggle,
-  dark
+  layoutToggle
 };

@@ -6,7 +6,18 @@
         <link rel="stylesheet" type="text/css" href="./style.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,600,0,0" />
         <link data-name="vs/editor/editor.main" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.51.0/min/vs/editor/editor.main.min.css" rel="stylesheet">
-    <body dark="true" editor_only="false" editor_only_mode="horizontal">
+    <body dark="true" editor_only="false" editor_only_mode="default">
+        <div id="layout_toggle">
+            <span id="default_layout" class="material-symbols-outlined">
+                space_dashboard
+            </span>
+            <span id="horizontal_layout" class="material-symbols-outlined">
+                dock_to_left
+            </span>
+            <span id="vertical_layout" class="material-symbols-outlined">
+                dock_to_bottom
+            </span>
+        </div>
         <div id="display_toggle">
             <span id="dark" class="material-symbols-outlined">
                 dark_mode
