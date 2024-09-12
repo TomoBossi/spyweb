@@ -125,7 +125,7 @@ function resizeDefaultLayout() {
   outputWrapper.style.height = outputWrapperHeight + "px";
 }
 
-function  {
+function resizeEditor() {
   editorOnly 
   ? editorOnlyHorizontal
     ? resizeEditorOnlyHorizontal()
