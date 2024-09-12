@@ -95,7 +95,7 @@ function setOutputTextAreaLayout(width, height) {
   outputTextArea.layout({ width: width, height: height });
 }
 
-function resizeVertical() {
+function resizeEditorOnlyVertical() {
   const windowWidth = window.innerWidth;
   const editorWrapperHeight = editorWrapper.getBoundingClientRect().height;
   const editorAreaWrapperHeight = editorAreaWrapper.getBoundingClientRect().height;
@@ -105,7 +105,7 @@ function resizeVertical() {
   outputWrapper.style.height = outputWrapperHeight + "px";
 }
 
-function resizeHorizontal() {
+function resizeEditorOnlyHorizontal() {
   const windowWidth = window.innerWidth;
   const editorWrapperWidth = editorWrapper.getBoundingClientRect().right;
   const outputWrapperWidth = windowWidth - editorWrapperWidth;
@@ -115,11 +115,25 @@ function resizeHorizontal() {
   outputWrapper.style.width = outputWrapperWidth + "px";
 }
 
-const resizeObserver = new ResizeObserver((_) =>
-  editorOnlyHorizontal
-    ? resizeHorizontal()
-    : resizeVertical()
-);
+function resizeDefaultLayout() {
+  const editorAreaWrapperWidth = editorAreaWrapper.getBoundingClientRect().width;
+  const editorWrapperHeight = editorWrapper.getBoundingClientRect().height;
+  const editorAreaWrapperHeight = editorAreaWrapper.getBoundingClientRect().height;
+  const outputWrapperHeight = editorAreaWrapperHeight - editorWrapperHeight;
+  setEditorTextAreaLayout(editorAreaWrapperWidth, editorWrapperHeight);
+  setOutputTextAreaLayout(editorAreaWrapperWidth, outputWrapperHeight);
+  outputWrapper.style.height = outputWrapperHeight + "px";
+}
+
+function  {
+  editorOnly 
+  ? editorOnlyHorizontal
+    ? resizeEditorOnlyHorizontal()
+    : resizeEditorOnlyVertical()
+  : resizeDefaultLayout();
+}
+
+const resizeObserver = new ResizeObserver((_) => resizeEditor());
 
 resizeObserver.observe(editorWrapper);
 resizeObserver.observe(document.body);
