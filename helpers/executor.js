@@ -36,7 +36,7 @@ function runningToggle() {
 function onMessageDefault(output, duration) {
   if (output.data) {
     setOutput(output.data);
-    appendOutput(`\nEjecutado en ${duration.toFixed(5)} segundos\n`);
+    appendOutput(`\nEjecutado en ${duration.toFixed(3)} segundos\n`);
     scrollOutput();
   }
 }
