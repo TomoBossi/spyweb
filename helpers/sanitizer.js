@@ -19,6 +19,7 @@ function isDef(line) {
 }
 
 function sanitize(python) {
+  // TODO check if insideMultilineString... AKA parse
   const lines = python.split("\n");
   const n = lines.length;
   let line;
