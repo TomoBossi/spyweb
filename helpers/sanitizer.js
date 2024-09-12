@@ -50,8 +50,23 @@ function sanitize(python) {
   return result;
 }
 
-function getFunctionSignatures(python) {
-  // TODO
+function parseArgs(args) {
+  //TODO
 }
 
-export { sanitize, getFunctionSignatures };
+function getFunctions(python) {
+  const signatures = 
+    python
+      .split("\n")
+      .map((line) => line.match(/def (.*)\((.*)\).*:/))
+      .filter((line) => line !== null)
+      .map((matches) => { 
+        return { 
+          name: matches[1], 
+          args: parseArgs(matches[2])
+        };
+      });
+  return signatures;
+}
+
+export { sanitize, getFunctions };
