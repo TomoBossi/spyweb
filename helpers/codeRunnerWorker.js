@@ -50,11 +50,11 @@ function parsedErrorMessage(e, python) {
 
 self.onmessage = async (event) => {
   await pyodideReadyPromise;
-  const [ python, clear, lastPrint ] = event.data;
+  const [ python, clear ] = event.data;
   if (python === null) {
     self.postMessage(null); // Dummy msg to notify caller on initialization
   } else {
-    let output;
+    let output = "";
     try {
       if (clear) {
         pyodide.runPython("globals().clear()\n");
@@ -66,16 +66,10 @@ self.onmessage = async (event) => {
         sys.stdout = io.StringIO()
       `);
 
-      if (lastPrint) {
-        self.pyodide.globals.set("print", (s) => {
-          output = String(s);
-        });
-      }
-
       await pyodide.loadPackagesFromImports(python);
       pyodide.runPython(python);
 
-      if (output === undefined) {
+      if (output === "") {
         output = pyodide.runPython("sys.stdout.getvalue()");
       }
 

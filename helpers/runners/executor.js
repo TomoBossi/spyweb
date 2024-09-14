@@ -23,9 +23,9 @@ let executor = new CodeRunner({
   },
 
   postRunHook: (output, duration) => {
-    if (output.data) {
+    if (output.data !== null) {
       editor.setOutput(output.data);
-      editor.appendOutput(`\nEjecutado en ${duration.toFixed(3)} segundos\n`);
+      editor.appendOutput(`${output.data === ""?"":"\n"}Ejecutado en ${duration.toFixed(3)} segundos\n`);
       editor.scrollOutput();
     }
     document.getElementById("run").setAttribute("enabled", "true");

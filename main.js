@@ -1,4 +1,4 @@
-// import("./helpers/runners/tester.js").then((m) => (tester = m));
+import("./helpers/runners/tester.js").then((m) => (tester = m));
 import("./helpers/runners/executor.js").then((m) => (executor = m.default));
 import("./helpers/editor.js").then((m) => (editor = m));
 
