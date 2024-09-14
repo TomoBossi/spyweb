@@ -34,7 +34,7 @@ for (name, obj) in [(k, v) for k, v in locals().items()]:
           RESERVEDOUTPUTDICTIONARY["imports"]["partial_imports"][RESERVEDINSPECTGETMODULE(obj).__name__] = [f"{obj.__name__} as {name}"]
     elif RESERVEDINSPECTISMODULE(obj):
       RESERVEDOUTPUTDICTIONARY["imports"]["true_imports"].append(f"{obj.__name__} as {name}")
-sys.stdout = io.StringIO()
+sys.stdout = io.StringIO() # clear stdout
 print(RESERVEDOUTPUTDICTIONARY)
 \n`
 

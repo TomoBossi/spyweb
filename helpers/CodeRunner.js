@@ -29,7 +29,7 @@ export default class CodeRunner {
     }
   }
 
-  run(python, clear = true, n = 1000) {
+  run(python, clear = true, outputLineLimit = 1000) {
     let duration = Date.now();
     if (!this.running && !this.loading) {
       this.running = true;
@@ -39,7 +39,7 @@ export default class CodeRunner {
         duration = (Date.now() - duration)/1000;
         this.postRunHook(output, duration);
       };
-      this.runner.postMessage([ python, clear, n ]);
+      this.runner.postMessage([ python, clear, outputLineLimit ]);
     }
   }
 }

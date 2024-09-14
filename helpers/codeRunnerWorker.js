@@ -50,7 +50,7 @@ function parsedErrorMessage(e, python) {
 
 self.onmessage = async (event) => {
   await pyodideReadyPromise;
-  const [ python, clear, n ] = event.data;
+  const [ python, clear, outputLineLimit ] = event.data;
   if (python === null) {
     self.postMessage(null); // Dummy msg to notify caller on initialization
   } else {
@@ -69,16 +69,15 @@ self.onmessage = async (event) => {
       pyodide.runPython(python);
 
       let output = pyodide.runPython(`
-        n = ${n}
+        n = ${outputLineLimit}
         i = sys.stdout.seek(0, io.SEEK_END)
         lines = []
         buffer = []
         while i > 0 and len(lines) < n:
-          chunk_size = min(1024, i)
+          chunk_size = min(1024, i) # read 1024b = 1kb per iteration
           i -= chunk_size
           sys.stdout.seek(i)
-          chunk = sys.stdout.read(chunk_size)
-          buffer.append(chunk)
+          buffer.append(sys.stdout.read(chunk_size))
           lines = ''.join(reversed(buffer)).splitlines(True)
           if len(lines) >= n:
             lines = lines[-n:]
