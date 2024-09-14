@@ -54,7 +54,6 @@ self.onmessage = async (event) => {
   if (python === null) {
     self.postMessage(null); // Dummy msg to notify caller on initialization
   } else {
-    let output = "";
     try {
       if (clear) {
         pyodide.runPython("globals().clear()\n");
@@ -69,9 +68,21 @@ self.onmessage = async (event) => {
       await pyodide.loadPackagesFromImports(python);
       pyodide.runPython(python);
 
-      if (output === "") {
-        output = pyodide.runPython("sys.stdout.getvalue()");
-      }
+      let output = pyodide.runPython(`
+        size = sys.stdout.tell()
+        sys.stdout.seek(0, io.SEEK_END)
+        lines = []
+        i = size
+        buffer_size = 1024
+        while i > 0 and len(lines) < 1000:
+            seek_amount = min(buffer_size, i)
+            i -= seek_amount
+            sys.stdout.seek(i)
+            chunk = sys.stdout.read(seek_amount)
+            lines = chunk.splitlines(True) + lines
+        ''.join(lines[-1000:])
+        # sys.stdout.getvalue()
+      `);
 
       self.postMessage(output);
     } catch (e) {
