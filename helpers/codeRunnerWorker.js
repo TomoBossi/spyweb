@@ -1,6 +1,7 @@
 importScripts("https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js");
 
 const maxOutputSize = 1000;
+
 let pyodideReadyPromise = load();
 
 async function load() {
@@ -49,24 +50,38 @@ function parsedErrorMessage(e, python) {
 
 self.onmessage = async (event) => {
   await pyodideReadyPromise;
-  const python = event.data;
+  const [ python, clear, lastPrint ] = event.data;
   if (python === null) {
-    self.postMessage(null); // Dummy msg to notify main thread
+    self.postMessage(null); // Dummy msg to notify caller on initialization
   } else {
-    let output = [];
-    self.pyodide.globals.set("print", (s) => {
-      output.push(...String(s).split("\n"));
-      output = output.slice(-maxOutputSize);
-      return output;
-    });
+    let output;
     try {
+      if (clear) {
+        pyodide.runPython("globals().clear()\n");
+      }
+
+      pyodide.runPython(`
+        import sys
+        import io
+        sys.stdout = io.StringIO()
+      `);
+
+      if (lastPrint) {
+        self.pyodide.globals.set("print", (s) => {
+          output = String(s);
+        });
+      }
+
       await pyodide.loadPackagesFromImports(python);
-      await pyodide.runPythonAsync(python);
-      self.postMessage(output.join("\n") + "\n");
+      pyodide.runPython(python);
+
+      if (output === undefined) {
+        output = pyodide.runPython("sys.stdout.getvalue()");
+      }
+
+      self.postMessage(output);
     } catch (e) {
-      self.postMessage(
-        output.join("\n") + "\n" + parsedErrorMessage(e, python)
-      );
+      self.postMessage(parsedErrorMessage(e, python));
     }
   }
 };

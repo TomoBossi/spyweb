@@ -32,9 +32,16 @@ const params = new URLSearchParams(window.location.href.split("?").pop());
 const editorWrapper = document.getElementById("monaco_editor_wrapper");
 const outputWrapper = document.getElementById("monaco_output_wrapper");
 const editorAreaWrapper = document.getElementById("monaco_wrapper");
+//const editorWrapper = document.getElementById("monaco_wrapper");
 
 let dark = !(params.has("light_mode") && params.get("light_mode") === "true");
 document.body.setAttribute("dark", dark);
+
+export function displayToggle() {
+  document.body.setAttribute("dark", dark ? "false" : "true");
+  monaco.editor.setTheme(dark ? "vs" : "vs-dark");
+  dark = !dark;
+}
 
 document.body.setAttribute(
   "editor_only", 
@@ -72,7 +79,7 @@ for (let [i, layout] of layoutCycle.entries()) {
   }
 }
 
-function layoutToggle() {
+export function layoutToggle() {
   currentLayoutIndex = (currentLayoutIndex + 1) % layoutCycle.length;
   document.body.setAttribute("editor_only", layoutCycle[currentLayoutIndex].editorOnly);
   document.body.setAttribute("editor_only_mode", layoutCycle[currentLayoutIndex].editorOnlyMode);
@@ -84,7 +91,11 @@ let editorTextArea = monaco.editor.create(
     value: editorPlaceholder,
     theme: dark ? "vs-dark" : "vs",
     fontSize: 14.5,
-    language: "python"
+    language: "python",
+    scrollbar: {
+      vertical: "visible",
+      horizontal: "visible"
+    }
   }
 );
 
@@ -96,33 +107,31 @@ const outputTextArea = monaco.editor.create(
     fontSize: 14.5,
     readOnly: true,
     minimap: { enabled: false },
-    lineNumbers: "on"
+    lineNumbers: "on",
+    scrollbar: {
+      vertical: "visible",
+      horizontal: "visible"
+    }
   }
 );
 
-function getInput() {
+export function getInput() {
   return editorTextArea.getValue();
 }
 
-function setInput(input) {
+export function setInput(input) {
   editorTextArea.setValue(input);
 }
 
-function setOutput(output) {
+export function setOutput(output) {
   outputTextArea.setValue(output);
 }
 
-function appendOutput(output) {
+export function appendOutput(output) {
   setOutput(outputTextArea.getValue() + output);
 }
 
-function displayToggle() {
-  document.body.setAttribute("dark", dark ? "false" : "true");
-  monaco.editor.setTheme(dark ? "vs" : "vs-dark");
-  dark = !dark;
-}
-
-function scrollOutput() {
+export function scrollOutput() {
   outputTextArea.revealLine(outputTextArea.getModel().getLineCount());
 }
 
@@ -138,7 +147,7 @@ function resizeEditorOnlyVertical() {
   const windowWidth = window.innerWidth;
   const editorWrapperHeight = editorWrapper.getBoundingClientRect().height;
   const editorAreaWrapperHeight = editorAreaWrapper.getBoundingClientRect().height;
-  const outputWrapperHeight = editorAreaWrapperHeight - editorWrapperHeight;
+  const outputWrapperHeight = editorAreaWrapperHeight - editorWrapperHeight - 30;
   setEditorTextAreaLayout(windowWidth, editorWrapperHeight);
   setOutputTextAreaLayout(windowWidth, outputWrapperHeight);
   outputWrapper.style.height = outputWrapperHeight + "px";
@@ -148,7 +157,7 @@ function resizeEditorOnlyHorizontal() {
   const windowWidth = window.innerWidth;
   const editorWrapperWidth = editorWrapper.getBoundingClientRect().right;
   const outputWrapperWidth = windowWidth - editorWrapperWidth;
-  const editorAreaWrapperHeight = editorAreaWrapper.getBoundingClientRect().height;
+  const editorAreaWrapperHeight = editorAreaWrapper.getBoundingClientRect().height - 30;
   setEditorTextAreaLayout(editorWrapperWidth, editorAreaWrapperHeight);
   setOutputTextAreaLayout(outputWrapperWidth, editorAreaWrapperHeight);
   outputWrapper.style.width = outputWrapperWidth + "px";
@@ -158,7 +167,7 @@ function resizeEditorDefaultLayout() {
   const editorAreaWrapperWidth = editorAreaWrapper.getBoundingClientRect().width;
   const editorWrapperHeight = editorWrapper.getBoundingClientRect().height;
   const editorAreaWrapperHeight = editorAreaWrapper.getBoundingClientRect().height;
-  const outputWrapperHeight = editorAreaWrapperHeight - editorWrapperHeight;
+  const outputWrapperHeight = editorAreaWrapperHeight - editorWrapperHeight - 30;
   setEditorTextAreaLayout(editorAreaWrapperWidth, editorWrapperHeight);
   setOutputTextAreaLayout(editorAreaWrapperWidth, outputWrapperHeight);
   outputWrapper.style.height = outputWrapperHeight + "px";
@@ -172,13 +181,3 @@ const resizeObserver = new ResizeObserver((_) => resizeEditor());
 
 resizeObserver.observe(editorWrapper);
 resizeObserver.observe(document.body);
-
-export {
-  setInput,
-  getInput,
-  setOutput,
-  appendOutput,
-  scrollOutput,
-  displayToggle,
-  layoutToggle
-};

@@ -18,7 +18,7 @@ function isDef(line) {
   return line.slice(0, 4) == "def ";
 }
 
-function sanitize(python) {
+export function sanitize(python) {
   // TODO check if insideMultilineString... AKA parse
   const lines = python.split("\n");
   const n = lines.length;
@@ -50,24 +50,3 @@ function sanitize(python) {
   }
   return result;
 }
-
-function parseArgs(args) {
-  //TODO
-}
-
-function getFunctions(python) {
-  const signatures = 
-    python
-      .split("\n")
-      .map((line) => line.match(/def (.*)\((.*)\).*:/))
-      .filter((line) => line !== null)
-      .map((matches) => { 
-        return { 
-          name: matches[1], 
-          args: parseArgs(matches[2])
-        };
-      });
-  return signatures;
-}
-
-export { sanitize, getFunctions };

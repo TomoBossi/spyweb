@@ -1,6 +1,6 @@
+// import("./helpers/runners/tester.js").then((m) => (tester = m));
+import("./helpers/runners/executor.js").then((m) => (executor = m.default));
 import("./helpers/editor.js").then((m) => (editor = m));
-import("./helpers/executor.js").then((m) => (executor = m));
-import("./helpers/sanitizer.js").then((m) => (sanitizer = m));
 
 // Miscellaneous event handling
 
@@ -10,7 +10,7 @@ document.addEventListener("keydown", (event) => {
     download();
   } else if (event.key === "F5") {
     event.preventDefault();
-    executor.run();
+    executor.run(editor.getInput());
   }
 });
 
@@ -39,8 +39,8 @@ document.getElementById("download").addEventListener("click", () => download());
 
 document.getElementById("display_toggle").addEventListener("click", () => editor.displayToggle());
 
-document.getElementById("run").addEventListener("click", () => executor.run());
+document.getElementById("run").addEventListener("click", () => executor.run(editor.getInput()));
 
-document.getElementById("stop").addEventListener("click", () => executor.stop());
+document.getElementById("reset").addEventListener("click", () => executor.reset());
 
 document.getElementById("layout_toggle").addEventListener("click", () => editor.layoutToggle());
