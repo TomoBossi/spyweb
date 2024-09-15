@@ -32,7 +32,6 @@ const params = new URLSearchParams(window.location.href.split("?").pop());
 const editorWrapper = document.getElementById("monaco_editor_wrapper");
 const outputWrapper = document.getElementById("monaco_output_wrapper");
 const editorAreaWrapper = document.getElementById("monaco_wrapper");
-//const editorWrapper = document.getElementById("monaco_wrapper");
 
 let dark = !(params.has("light_mode") && params.get("light_mode") === "true");
 document.body.setAttribute("dark", dark);

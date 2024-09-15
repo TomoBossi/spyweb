@@ -8,7 +8,7 @@ async function load() {
   self.pyodide = await loadPyodide();
 }
 
-function parsedErrorMessage(e, python) {
+function parsedErrorMessage(e, python, test = false) {
   let logging = false;
   let message = "";
   let index = 0;
@@ -18,6 +18,7 @@ function parsedErrorMessage(e, python) {
   let submodule;
   let lineContent;
   const lines = e.message.split("\n");
+  const assertionError = lines[lines.length - 2] === "AssertionError";
   for (let [i, line] of lines.entries()) {
     [_, file, lineNumber] = line.match(/File "(\S+)", line (\d+)/) || [];
     [_, submodule] = line.match(/, in (\S+)/) || [];
@@ -25,10 +26,13 @@ function parsedErrorMessage(e, python) {
       if (file === "<exec>") {
         logging = true;
         lineContent = python.split("\n")[lineNumber - 1].trim();
+        if (assertionError) {
+          return `No se cumple este caso de prueba: ${lineContent.slice(7, -1)}`;
+        }
         if (submodule === "<module>" || submodule === undefined) {
           message +=
             "\t".repeat(depth) +
-            `Error en este archivo, linea ${lineNumber}: ${lineContent}\n`;
+            `Error en este ${test ? "caso de prueba":`archivo, linea ${lineNumber}`}: ${lineContent}\n`;
         } else {
           message +=
             "\t".repeat(depth) +
@@ -50,7 +54,7 @@ function parsedErrorMessage(e, python) {
 
 self.onmessage = async (event) => {
   await pyodideReadyPromise;
-  const [ python, clear, outputLineLimit ] = event.data;
+  const [ python, clear, test, outputLinesLimit ] = event.data;
   if (python === null) {
     self.postMessage(null); // Dummy msg to notify caller on initialization
   } else {
@@ -69,7 +73,7 @@ self.onmessage = async (event) => {
       pyodide.runPython(python);
 
       let output = pyodide.runPython(`
-        n = ${outputLineLimit}
+        n = ${outputLinesLimit}
         i = sys.stdout.seek(0, io.SEEK_END)
         lines = []
         buffer = []
@@ -86,7 +90,7 @@ self.onmessage = async (event) => {
 
       self.postMessage(output);
     } catch (e) {
-      self.postMessage(parsedErrorMessage(e, python));
+      self.postMessage(parsedErrorMessage(e, python, test));
     }
   }
 };

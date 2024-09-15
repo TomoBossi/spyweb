@@ -1,43 +1,66 @@
 import CodeRunner from "../CodeRunner.js";
-import * as editor from "../editor.js";
 
-let tester = new CodeRunner({
-  preInitHook: (_) => {},
-  postInitHook: (_) => [],
-  preRunHook: () => {},
-  postRunHook: (output, _) => console.log(output.data)
-});
+export let result;
 
-export const preTestPrologue = `\n
-RESERVEDIMPORTNAMEARRAY = ["sys", "io", "RESERVEDINSPECTEMPTY", "RESERVEDIMPORTNAMEARRAY", "RESERVEDINSPECTSIGNATURE", "RESERVEDINSPECTGETFILE", "RESERVEDINSPECTISMODULE", "RESERVEDINSPECTGETMODULE", "RESERVEDOUTPUTDICTIONARY"]
-from inspect import Parameter as RESERVEDINSPECTEMPTY, signature as RESERVEDINSPECTSIGNATURE, getfile as RESERVEDINSPECTGETFILE, ismodule as RESERVEDINSPECTISMODULE, getmodule as RESERVEDINSPECTGETMODULE
-RESERVEDINSPECTEMPTY = RESERVEDINSPECTEMPTY.empty
-\n`
+const globals = "RESERVEDGLOBALSARRAY";
+const imports = "RESERVEDIMPORTNAMEARRAY";
+const objects = "RESERVEDIMPORTANTOBJECTSDICTIONARY";
+const empty = "RESERVEDINSPECTEMPTY";
+const signature = "RESERVEDINSPECTSIGNATURE";
+const getfile = "RESERVEDINSPECTGETFILE";
+const ismodule = "RESERVEDINSPECTISMODULE";
+const getmodule = "RESERVEDINSPECTGETMODULE";
+const name = "RESERVEDOBJECTNAMEITERATOR";
+const obj = "RESERVEDOBJECTITERATOR";
+const k = "RESERVEDKEYITERATOR";
+const v = "RESERVEDVALUEITERATOR";
+const p = "RESERVEDPARAMETERITERATOR";
 
-export const preTestEpilogue = `\n
-RESERVEDOUTPUTDICTIONARY = {"local_functions": {}, "imports": {"partial_imports": {}, "true_imports": []}}
-for (name, obj) in [(k, v) for k, v in locals().items()]:
-  if name not in RESERVEDIMPORTNAMEARRAY:
-    if callable(obj):
+const preTestPrologue = `\n
+${globals} = ["__builtins__", "__doc__", "${globals}", "${imports}", "${objects}"]
+${imports} = ["sys", "io", "${empty}", "${signature}", "${getfile}", "${ismodule}", "${getmodule}", "${objects}"]
+from inspect import Parameter as ${empty}, signature as ${signature}, getfile as ${getfile}, ismodule as ${ismodule}, getmodule as ${getmodule}
+${empty} = ${empty}.empty
+\n`;
+
+const preTestEpilogue = `\n
+${objects} = {"local_functions": {}, "imports": {"partial_imports": {}, "true_imports": []}, "objects": []}
+for (${name}, ${obj}) in [(${k}, ${v}) for ${k}, ${v} in globals().items()]:
+  if ${name} not in ${imports}:
+    if callable(${obj}):
       try:
-        if RESERVEDINSPECTGETFILE(obj) == "<exec>":
-          RESERVEDOUTPUTDICTIONARY["local_functions"][name] = {
-            "parameters": [parameter for parameter, _ in RESERVEDINSPECTSIGNATURE(obj).parameters.items()], 
-            "parameters_literal": str(RESERVEDINSPECTSIGNATURE(obj))
+        if ${getfile}(${obj}) == "<exec>":
+          ${objects}["local_functions"][${name}] = {
+            "parameters": [${p} for ${p}, _ in ${signature}(${obj}).parameters.items()], 
+            "parameters_literal": str(${signature}(${obj}))
           }
+          ${objects}["objects"].append(${name})
         else:
           raise(TypeError)
       except:
-        if RESERVEDINSPECTGETMODULE(obj).__name__ in RESERVEDOUTPUTDICTIONARY["imports"]["partial_imports"]:
-          RESERVEDOUTPUTDICTIONARY["imports"]["partial_imports"][RESERVEDINSPECTGETMODULE(obj).__name__].append(f"{obj.__name__} as {name}")
+        if ${getmodule}(${obj}).__name__ in ${objects}["imports"]["partial_imports"]:
+          ${objects}["imports"]["partial_imports"][${getmodule}(${obj}).__name__].append(f"{${obj}.__name__} as {${name}}")
         else:
-          RESERVEDOUTPUTDICTIONARY["imports"]["partial_imports"][RESERVEDINSPECTGETMODULE(obj).__name__] = [f"{obj.__name__} as {name}"]
-    elif RESERVEDINSPECTISMODULE(obj):
-      RESERVEDOUTPUTDICTIONARY["imports"]["true_imports"].append(f"{obj.__name__} as {name}")
-sys.stdout = io.StringIO() # clear stdout
-print(RESERVEDOUTPUTDICTIONARY)
-\n`
+          ${objects}["imports"]["partial_imports"][${getmodule}(${obj}).__name__] = [f"{${obj}.__name__} as {${name}}"]
+        ${objects}["objects"].append(${name})
+    elif ${ismodule}(${obj}):
+      ${objects}["imports"]["true_imports"].append(f"{${obj}.__name__} as {${name}}")
+      ${objects}["objects"].append(${name})
+for ${name} in [${k} for ${k} in globals()]:
+  if ${name} not in ${globals} + ${imports} + ${objects}["objects"]:
+    del globals()[${name}]
+sys.stdout = io.StringIO() # clear stdout (output)
+\n`;
 
-export function getFunctions(python) {
-  tester.run(preTestPrologue + python + preTestEpilogue);
+let tester = new CodeRunner({
+  async: true,
+  preInitHook: (_) => {},
+  postInitHook: (_) => {},
+  preRunHook: () => {},
+  postRunHook: (output, _) => result = output.data
+});
+
+export function run(python, test) {
+  tester.run(preTestPrologue);
+  tester.run(`${python}\n${preTestEpilogue}\n${test}\n`, false, true);
 }

@@ -2,7 +2,7 @@ import("./helpers/runners/tester.js").then((m) => (tester = m));
 import("./helpers/runners/executor.js").then((m) => (executor = m.default));
 import("./helpers/editor.js").then((m) => (editor = m));
 
-// Miscellaneous event handling
+// miscellaneous event handling
 
 document.addEventListener("keydown", (event) => {
   if (event.ctrlKey && event.key === "s") {

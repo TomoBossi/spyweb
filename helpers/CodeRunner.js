@@ -3,6 +3,7 @@ export default class CodeRunner {
     this.runner;
     this.running = false;
     this.loading = true;
+    this.async = kwargs.async;
     this.preInitHook = kwargs.preInitHook;
     this.postInitHook = kwargs.postInitHook;
     this.preRunHook = kwargs.preRunHook;
@@ -19,7 +20,7 @@ export default class CodeRunner {
       this.loading = false;
       this.postInitHook(reset);
     };
-    this.runner.postMessage([ null, null, null ]);
+    this.runner.postMessage([ null, null, null, null ]);
   }
 
   reset() {
@@ -29,17 +30,17 @@ export default class CodeRunner {
     }
   }
 
-  run(python, clear = true, outputLineLimit = 1000) {
+  run(python, clear = true, test = false, outputLinesLimit = 1000) {
     let duration = Date.now();
-    if (!this.running && !this.loading) {
+    if ((!this.running || this.async) && !this.loading) {
       this.running = true;
-      this.preRunHook();
+      this.preRunHook(python);
       this.runner.onmessage = (output) => {
         this.running = false;
         duration = (Date.now() - duration)/1000;
         this.postRunHook(output, duration);
       };
-      this.runner.postMessage([ python, clear, outputLineLimit ]);
+      this.runner.postMessage([ python, clear, test, outputLinesLimit ]);
     }
   }
 }

@@ -3,6 +3,8 @@ import * as editor from "../editor.js";
 
 let executor = new CodeRunner({
 
+  async: false,
+
   preInitHook: (reset) => {
     reset? 
       editor.setOutput("Reiniciando ejecutor...\n"):
