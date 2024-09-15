@@ -2,9 +2,10 @@ import CodeRunner from "../CodeRunner.js";
 
 export let result;
 
+// afters days of deep thought, this is the best I could come up with
+// it fuckign sucks
 const globals = "RESERVEDGLOBALSARRAY";
 const imports = "RESERVEDIMPORTNAMEARRAY";
-const objects = "RESERVEDIMPORTANTOBJECTSDICTIONARY";
 const empty = "RESERVEDINSPECTEMPTY";
 const signature = "RESERVEDINSPECTSIGNATURE";
 const getfile = "RESERVEDINSPECTGETFILE";
@@ -16,41 +17,43 @@ const k = "RESERVEDKEYITERATOR";
 const v = "RESERVEDVALUEITERATOR";
 const p = "RESERVEDPARAMETERITERATOR";
 
-const preTestPrologue = `\n
-${globals} = ["__builtins__", "__doc__", "${globals}", "${imports}", "${objects}"]
-${imports} = ["sys", "io", "${empty}", "${signature}", "${getfile}", "${ismodule}", "${getmodule}", "${objects}"]
+export const environment = "RESERVEDLOCALENVIRONMENTDICTIONARY";
+
+const prologue = `
+${globals} = ["__builtins__", "__doc__", "${globals}", "${imports}", "${environment}"]
+${imports} = ["sys", "io", "${empty}", "${signature}", "${getfile}", "${ismodule}", "${getmodule}", "${environment}"]
 from inspect import Parameter as ${empty}, signature as ${signature}, getfile as ${getfile}, ismodule as ${ismodule}, getmodule as ${getmodule}
 ${empty} = ${empty}.empty
-\n`;
+`;
 
-const preTestEpilogue = `\n
-${objects} = {"local_functions": {}, "imports": {"partial_imports": {}, "true_imports": []}, "objects": []}
+const epilogue = `
+${environment} = {"local_functions": {}, "imports": {"partial_imports": {}, "true_imports": []}, "names": []}
 for (${name}, ${obj}) in [(${k}, ${v}) for ${k}, ${v} in globals().items()]:
   if ${name} not in ${imports}:
     if callable(${obj}):
       try:
         if ${getfile}(${obj}) == "<exec>":
-          ${objects}["local_functions"][${name}] = {
+          ${environment}["local_functions"][${name}] = {
             "parameters": [${p} for ${p}, _ in ${signature}(${obj}).parameters.items()], 
             "parameters_literal": str(${signature}(${obj}))
           }
-          ${objects}["objects"].append(${name})
+          ${environment}["names"].append(${name})
         else:
           raise(TypeError)
       except:
-        if ${getmodule}(${obj}).__name__ in ${objects}["imports"]["partial_imports"]:
-          ${objects}["imports"]["partial_imports"][${getmodule}(${obj}).__name__].append(f"{${obj}.__name__} as {${name}}")
+        if ${getmodule}(${obj}).__name__ in ${environment}["imports"]["partial_imports"]:
+          ${environment}["imports"]["partial_imports"][${getmodule}(${obj}).__name__].append(f"{${obj}.__name__} as {${name}}")
         else:
-          ${objects}["imports"]["partial_imports"][${getmodule}(${obj}).__name__] = [f"{${obj}.__name__} as {${name}}"]
-        ${objects}["objects"].append(${name})
+          ${environment}["imports"]["partial_imports"][${getmodule}(${obj}).__name__] = [f"{${obj}.__name__} as {${name}}"]
+        ${environment}["names"].append(${name})
     elif ${ismodule}(${obj}):
-      ${objects}["imports"]["true_imports"].append(f"{${obj}.__name__} as {${name}}")
-      ${objects}["objects"].append(${name})
+      ${environment}["imports"]["true_imports"].append(f"{${obj}.__name__} as {${name}}")
+      ${environment}["names"].append(${name})
 for ${name} in [${k} for ${k} in globals()]:
-  if ${name} not in ${globals} + ${imports} + ${objects}["objects"]:
+  if ${name} not in ${globals} + ${imports} + ${environment}["names"]:
     del globals()[${name}]
 sys.stdout = io.StringIO() # clear stdout (output)
-\n`;
+`;
 
 let tester = new CodeRunner({
   async: true,
@@ -61,6 +64,7 @@ let tester = new CodeRunner({
 });
 
 export function run(python, test) {
-  tester.run(preTestPrologue);
-  tester.run(`${python}\n${preTestEpilogue}\n${test}\n`, false, true);
+  // ran separately so that error message line numbers match editor code
+  tester.run(prologue);
+  tester.run(`${python}\n${epilogue}\n${test}\n`, false, true);
 }
