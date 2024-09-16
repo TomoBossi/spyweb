@@ -2,6 +2,8 @@ import("./helpers/runners/tester.js").then((m) => (tester = m));
 import("./helpers/runners/executor.js").then((m) => (executor = m.default));
 import("./helpers/editor.js").then((m) => (editor = m));
 
+import("./demo.js").then((m) => (demo = m.demo));
+
 // miscellaneous event handling
 
 document.addEventListener("keydown", (event) => {

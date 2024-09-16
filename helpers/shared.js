@@ -1,7 +1,7 @@
-// miscellaneous shared variables
+// miscellaneous shared variables, mostly nasty stuff
 
 export let data = {
-  testSuiteDimension: [1],
+  testSuiteDimension: undefined,
   testResult: "RESERVEDTESTRESULTFLAG",
   testStatus: "RESERVEDTESTSTATUSARRAY",
   environment: "RESERVEDLOCALENVIRONMENTDICTIONARY",
@@ -25,5 +25,4 @@ export let data = {
   j: "RESERVEDINDEXITERATORJ",
   lineno: "RESERVEDLINENUMBER",
 };
-
-// TODO actualizar testSuiteDimension por DOM Event de selección de test suite
+// TODO sync testSuiteDimension to current test suite selection

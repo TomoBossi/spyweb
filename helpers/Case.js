@@ -1,10 +1,13 @@
 import { data } from "./shared.js";
 import { defaults } from "../text.js";
 
+// this class is just meant to be used by the CaseGroup class
+
 export default class Case {
   constructor(kwargs) {
     this.status = 0; // -1: error, 0: never ran, 1: success, 2: running/queued
     this.label = kwargs.label; // short description of the test
+    this.setup = kwargs.setup; // "hidden" code snippet (string literal) to be ran as a setup before the test code snippet - needless to say, this is not hidden at all
     this.python = kwargs.python; // test code snippet (string literal)
     this.repeat = kwargs.repeat; // 1: runs only once, n; n > 1: runs n times
     this.timeout = kwargs.timeout; // total allowed time in ms for all <repeat> iterations
@@ -16,6 +19,7 @@ ${data.testResult} = True
 print('\\t- "${this.label}"')
 for ${data.i} in range(${this.repeat}):
   try:
+    ${this.setup.split("\n").filter(line => !/^\s*$/.test(line)).join("\n    ")}
     ${data.lineno} = ${data.getframeinfo}(${data.currentframe}()).lineno
     ${this.python.split("\n").filter(line => !/^\s*$/.test(line)).join("\n    ")}
   except Exception as e:
