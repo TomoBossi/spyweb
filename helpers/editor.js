@@ -132,7 +132,7 @@ function resizeEditorOnlyHorizontal() {
   const editorAreaWrapperHeight = editorAreaWrapper.getBoundingClientRect().height - 30;
   setEditorTextAreaLayout(editorWrapperWidth, editorAreaWrapperHeight);
   setOutputTextAreaLayout(outputWrapperWidth, editorAreaWrapperHeight);
-  outputWrapper.style.width = outputWrapperWidth + "px";
+  outputWrapper.style.width = (outputWrapperWidth - 2) + "px";
 }
 
 function resizeEditorDefaultLayout() {

@@ -50,8 +50,8 @@ def dado(caras):
   """
   Simula tirar un dado de la cantidad de caras pasada por parámetro
   """
-  tests_successado = random.randint(1, caras)
-  return tests_successado
+  resultado = random.randint(1, caras)
+  return resultado
 
 d20 = dado(20)
 print(d20)

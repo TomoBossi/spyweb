@@ -1,7 +1,8 @@
 import CodeRunner from "../CodeRunner.js";
-import Case from "../../tests/Case.js";
+import Case from "../Case.js";
 import { data } from "../shared.js";
 import * as editor from "../editor.js";
+import CaseGroup from "../CaseGroup.js";
 
 // afters days of deep thought, this is the best I could come up with
 // it fuckign sucks
@@ -88,7 +89,7 @@ export function testCaseGroup(python, caseGroup, targets = [], reset = false) {
 }
 
 // Demo
-export let testTestCase = new Case({
+export let testCase = new Case({
   repeat: 100,
   label: "Los dados del cubilete tienen caras entre 1 y 6",
   python: `
@@ -96,4 +97,10 @@ cubilete = tirar_cubilete()
 for indice in range(len(cubilete)):
   assert(1 <= cubilete[indice] <= 6)
   `
+});
+
+export let testCaseGroup = new CaseGroup({
+  index: 0,
+  label: "tirar_cubilete()",
+  cases: [testCase]
 });

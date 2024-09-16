@@ -147,7 +147,10 @@ html, body {
 }
 
 body {
+  overflow: hidden;
   display: flex;
+  box-sizing: border-box;
+  border: 1px var(--border-color) solid;
 }
 
 #test_area_wrapper {
@@ -207,14 +210,12 @@ body {
   overflow: hidden;
   box-sizing: border-box;
   border-bottom: 1px var(--border-color) solid;
-  border-top: 1px var(--border-color) solid;
-  border-left: 1px var(--border-color) solid;
 }
 
 #buttons_bar {
   display: flex;
   height: 100%;
-  width: 360px;
+  width: 345px;
 }
 
 #tester_buttons_bar {
@@ -236,10 +237,13 @@ body {
   box-sizing: border-box;
   border-right: 1px var(--border-color) solid;
   line-height: 200%;
+  vertical-align: center;
 }
 
 .material-symbols-outlined {
   user-select: none;
+  position: relative;
+  top: 2px;
 }
 
 .monaco_editor_button:hover[enabled="true"] {
@@ -253,11 +257,6 @@ body {
 
 .monaco_editor_button[enabled="false"] {
   color: var(--button-disabled-font-color);
-}
-
-.material-symbols-outlined {
-  position: relative;
-  top: 2px;
 }
 
 #monaco_textareas_wrapper {
@@ -276,6 +275,7 @@ body {
 }
 
 #display_toggle {
+  user-select: none;
   width: 30px;
   height: 30px;
   position: fixed;
@@ -283,10 +283,11 @@ body {
   right: 0px;
   color: var(--toggle-color);
   align-items: center;
-  line-height: 30px;
+  vertical-align: center;
 }
 
 #layout_toggle {
+  user-select: none;
   width: 30px;
   height: 30px;
   position: fixed;
@@ -294,7 +295,7 @@ body {
   right: 30px;
   color: var(--toggle-color);
   align-items: center;
-  line-height: 30px;
+  vertical-align: center;
 }
 
 #display_toggle:hover, #layout_toggle:hover {
@@ -302,11 +303,12 @@ body {
 }
 
 #dark, #light, #default_layout, #horizontal_layout, #vertical_layout {
-  transform: scale(0.8);
+  transform: scale(0.7);
+  vertical-align: center;
 }
 
 #default_layout {
-  transform: scale(-0.8, 0.8);
+  transform: scale(-0.7, 0.7);
   padding-left: 6px;
 }
 

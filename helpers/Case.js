@@ -1,4 +1,4 @@
-import { data } from "../helpers/shared.js";
+import { data } from "./shared.js";
 import { defaults } from "../text.js";
 
 export default class Case {
@@ -20,7 +20,6 @@ for ${data.i} in range(${this.repeat}):
     ${this.python.split("\n").filter(line => !/^\s*$/.test(line)).join("\n    ")}
   except Exception as e:
     ${data.testResult} = False
-    # TODO save test case error status to output variable!
     if ${this.repeat}:
       print(f"\\t\\t${defaults.testerErrorMessageRepetition(data.i)}\\n")
     else:
