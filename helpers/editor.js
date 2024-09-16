@@ -4,6 +4,7 @@ const params = new URLSearchParams(window.location.href.split("?").pop());
 const editorWrapper = document.getElementById("monaco_editor_wrapper");
 const outputWrapper = document.getElementById("monaco_output_wrapper");
 const editorAreaWrapper = document.getElementById("monaco_wrapper");
+const testAreaWrapper = document.getElementById("test_area_wrapper");
 
 let dark = !(params.has("light_mode") && params.get("light_mode") === "true");
 document.body.setAttribute("dark", dark);
@@ -135,13 +136,16 @@ function resizeEditorOnlyHorizontal() {
 }
 
 function resizeEditorDefaultLayout() {
+  const windowWidth = window.innerWidth;
   const editorAreaWrapperWidth = editorAreaWrapper.getBoundingClientRect().width;
   const editorWrapperHeight = editorWrapper.getBoundingClientRect().height;
   const editorAreaWrapperHeight = editorAreaWrapper.getBoundingClientRect().height;
   const outputWrapperHeight = editorAreaWrapperHeight - editorWrapperHeight - 30;
+  const testAreaWrapperWidth = windowWidth - editorAreaWrapperWidth;
   setEditorTextAreaLayout(editorAreaWrapperWidth, editorWrapperHeight);
   setOutputTextAreaLayout(editorAreaWrapperWidth, outputWrapperHeight);
   outputWrapper.style.height = outputWrapperHeight + "px";
+  testAreaWrapper.style.width = testAreaWrapperWidth + "px";
 }
 
 function resizeEditor() {

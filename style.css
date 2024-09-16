@@ -44,10 +44,12 @@ body[dark="false"] {
 /* Layout variables */
 
 body[editor_only="false"] {
+  --test-areas-wrapper-width: 30%;
+  --test-areas-wrapper-max-width: 70%;
+  --test-areas-wrapper-min-width: 30%;
   --editor-text-areas-wrapper-resize: horizontal;
   --editor-text-areas-wrapper-width: 70%;
   --editor-text-areas-wrapper-max-width: 70%;
-  --editor-text-areas-wrapper-min-width: 30%;
   --editor-text-areas-wrapper-min-width: 30%;
   --editor-text-areas-wrapper-border-right: 2px var(--border-color) solid;
   --editor-wrapper-width: 100%;
@@ -144,6 +146,19 @@ html, body {
   width: 100%;
 }
 
+body {
+  display: flex;
+}
+
+#test_area_wrapper {
+  width: var(--test-areas-wrapper-width);
+  max-width: var(--test-areas-wrapper-max-width);
+  min-width: var(--test-areas-wrapper-min-width);
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
 #monaco_wrapper {
   height: 100%;
   overflow: hidden;
@@ -185,7 +200,7 @@ html, body {
   min-height: var(--output-wrapper-min-height);
 }
 
-#monaco_editor_buttons_bar_wrapper {
+.buttons_bar {
   background-color: var(--button-bar-color);
   height: 30px;
   width: 100%;
@@ -196,10 +211,16 @@ html, body {
   border-left: 1px var(--border-color) solid;
 }
 
-#monaco_editor_buttons_bar {
+#buttons_bar {
   display: flex;
   height: 100%;
   width: 360px;
+}
+
+#tester_buttons_bar {
+  display: flex;
+  height: 100%;
+  width: 105px;
 }
 
 .monaco_editor_button {

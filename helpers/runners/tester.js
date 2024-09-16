@@ -82,7 +82,7 @@ export function testCaseGroup(python, caseGroup, targets = [], reset = false) {
       tester.get(data.testStatus);
     }
   }
-  // if (<all success>) { .every(Boolean)
+  // if (<all success>) { .every(Boolean) // TODO
     // tester.run(`print("> ${caseGroup.label}\\n")`, false, true);
   // }
 }
