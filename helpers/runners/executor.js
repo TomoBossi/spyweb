@@ -1,5 +1,6 @@
 import CodeRunner from "../CodeRunner.js";
 import * as editor from "../editor.js";
+import { defaults } from "../../text.js";
 
 let executor = new CodeRunner({
 
@@ -7,14 +8,14 @@ let executor = new CodeRunner({
 
   preInitHook: (reset) => {
     reset? 
-      editor.setOutput("Reiniciando ejecutor...\n"):
-    editor.appendOutput("\nIniciando ejecutor...\n");
+      editor.setOutput(`${defaults.executorResetLoadingMessage}\n`):
+    editor.appendOutput(`\n${defaults.executorLoadingMessage}\n`);
     document.getElementById("run").setAttribute("enabled", false);
     document.getElementById("reset").setAttribute("enabled", false);
   },
 
   postInitHook: (_) => {
-    editor.appendOutput("Ejecutor iniciado con éxito :D\n");
+    editor.appendOutput(`${defaults.executorLoadedSuccessfullyMessage}\n`);
     document.getElementById("run").setAttribute("enabled", true);
     document.getElementById("reset").setAttribute("enabled", true);
   },
@@ -25,13 +26,15 @@ let executor = new CodeRunner({
   },
 
   postRunHook: (output, duration) => {
-    if (output.data !== null) {
-      editor.setOutput(output.data);
-      editor.appendOutput(`${output.data === ""?"":"\n"}Ejecutado en ${duration.toFixed(3)} segundos\n`);
-      editor.scrollOutput();
-    }
+    editor.setOutput(output);
+    editor.appendOutput(`${output === ""?"":"\n"}${defaults.executionDurationMessage(duration)}\n`);
+    editor.scrollOutput();
     document.getElementById("run").setAttribute("enabled", "true");
-  }
+  },
+
+  postGetHook: null,
+
+  storage: {}
 });
 
 export default executor;

@@ -1,6 +1,6 @@
 importScripts("https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js");
 
-const maxOutputSize = 1000;
+let data = {};
 
 let pyodideReadyPromise = load();
 
@@ -8,7 +8,7 @@ async function load() {
   self.pyodide = await loadPyodide();
 }
 
-function parsedErrorMessage(e, python, test = false) {
+function parsedErrorMessage(e, python, output, test = false) {
   let logging = false;
   let message = "";
   let index = 0;
@@ -27,21 +27,21 @@ function parsedErrorMessage(e, python, test = false) {
         logging = true;
         lineContent = python.split("\n")[lineNumber - 1].trim();
         if (assertionError) {
-          return `No se cumple este caso de prueba: ${lineContent.slice(7, -1)}`;
+          return `${test?`${output}\n`:""}${data.conditionNotMet}: ${lineContent.slice(7, -1)}\n`;
         }
         if (submodule === "<module>" || submodule === undefined) {
           message +=
             "\t".repeat(depth) +
-            `Error en este ${test ? "caso de prueba":`archivo, linea ${lineNumber}`}: ${lineContent}\n`;
+            `${test ? `${data.errorInCurrentTestCase}`:`${data.errorInCurrentFile}, ${data.line} ${lineNumber}`}: ${lineContent}\n`;
         } else {
           message +=
             "\t".repeat(depth) +
-            `Error en este archivo, linea ${lineNumber}, en "${submodule}": ${lineContent}\n`;
+            `${data.errorInCurrentFile}, ${data.line} ${lineNumber}, ${data.in} "${submodule}": ${lineContent}\n`;
         }
       } else if (logging) {
         message +=
           "\t".repeat(depth) +
-          `Error en el archivo "${file}", en "${submodule}"\n`;
+          `${data.errorInFile} "${file}", ${data.in} "${submodule}"\n`;
       }
       if (logging) {
         index = i;
@@ -49,14 +49,28 @@ function parsedErrorMessage(e, python, test = false) {
       }
     }
   }
-  return message + "\n" + lines.slice(index + 1).join("\n");
+  return `${test?`${output}\n`:""}${message}\n${lines.slice(index + 1).join("\n")}`;
 }
 
 self.onmessage = async (event) => {
   await pyodideReadyPromise;
-  const [ python, clear, test, outputLinesLimit ] = event.data;
-  if (python === null) {
-    self.postMessage(null); // Dummy msg to notify caller on initialization
+  const [ initData, python, clear, test, timeout, outputLinesLimit, get, print ] = event.data;
+  if (initData !== null) {
+    data = initData;
+    self.postMessage([ null , null ]); // dummy msg to notify caller on initialization
+  } else if (get !== null) {
+    try {
+      self.postMessage([ String(pyodide.runPython(get)), false ]);
+    } catch (e) {
+      self.postMessage([ e.message, true ]);
+    }
+  } else if (print !== null) {
+    try {
+      pyodide.runPython(`print(${print}\\n)`)
+      self.postMessage([ null, false ]);
+    } catch (e) {
+      self.postMessage([ e.message, true ]);
+    }
   } else {
     try {
       if (clear) {
@@ -67,30 +81,28 @@ self.onmessage = async (event) => {
         import sys
         import io
         sys.stdout = io.StringIO()
+        def ${data.getOutput}():
+          n = ${outputLinesLimit}
+          i = sys.stdout.seek(0, io.SEEK_END)
+          lines = []
+          buffer = []
+          while i > 0 and len(lines) < n:
+            chunk_size = min(1024, i) # read 1024b = 1kb per iteration
+            i -= chunk_size
+            sys.stdout.seek(i)
+            buffer.append(sys.stdout.read(chunk_size))
+            lines = ''.join(reversed(buffer)).splitlines(True)
+            if len(lines) >= n:
+              lines = lines[-n:]
+          return ''.join(lines)
       `);
 
       await pyodide.loadPackagesFromImports(python);
       pyodide.runPython(python);
 
-      let output = pyodide.runPython(`
-        n = ${outputLinesLimit}
-        i = sys.stdout.seek(0, io.SEEK_END)
-        lines = []
-        buffer = []
-        while i > 0 and len(lines) < n:
-          chunk_size = min(1024, i) # read 1024b = 1kb per iteration
-          i -= chunk_size
-          sys.stdout.seek(i)
-          buffer.append(sys.stdout.read(chunk_size))
-          lines = ''.join(reversed(buffer)).splitlines(True)
-          if len(lines) >= n:
-            lines = lines[-n:]
-        ''.join(lines)
-      `);
-
-      self.postMessage(output);
+      self.postMessage([ pyodide.runPython(`${data.getOutput}()`), false ]);
     } catch (e) {
-      self.postMessage(parsedErrorMessage(e, python, test));
+      self.postMessage([ parsedErrorMessage(e, python, pyodide.runPython(`${data.getOutput}()`), test), true ]);
     }
   }
 };

@@ -1,32 +1,4 @@
-const editorPlaceholder = `"""
-  _____                _____                      
- |  __ \\              / ____/                     
- | |__) |__ _ __  ___| |     ___  _ __ ___  _ __  
- |  ___/ _ \\ '_ \\/ __| |    / _ \\| '_ ' _ \\| '_ \\ 
- | |  |  __/ | | \\__ \\ |___| (_) | | | | | | |_) |
- |_|   \\___|_| |_|___/\\_____\\___/|_| |_| |_| .__/ 
-                                           | |    
-                                           |_|
-
-Subí tu archivo .py o pegá/escribí tu código acá
-
-Por ejemplo:
-"""
-
-import random
-
-def dado(caras):
-  """
-  Simula tirar un dado de la cantidad de caras pasada por parámetro
-  """
-  resultado = random.randint(1, caras)
-  return resultado
-
-d20 = dado(20)
-print(d20)
-`;
-
-const outputTextAreaPlaceholder = `Acá vas a ver las salidas o errores de la ejecución\n`;
+import { defaults } from "../text.js";
 
 const params = new URLSearchParams(window.location.href.split("?").pop());
 const editorWrapper = document.getElementById("monaco_editor_wrapper");
@@ -87,7 +59,7 @@ export function layoutToggle() {
 let editorTextArea = monaco.editor.create(
   document.getElementById("monaco_editor"),
   {
-    value: editorPlaceholder,
+    value: defaults.editorPlaceholder,
     theme: dark ? "vs-dark" : "vs",
     fontSize: 14.5,
     language: "python",
@@ -101,7 +73,7 @@ let editorTextArea = monaco.editor.create(
 const outputTextArea = monaco.editor.create(
   document.getElementById("monaco_output"),
   {
-    value: outputTextAreaPlaceholder,
+    value: `${defaults.outputTextAreaPlaceholder}\n`,
     theme: dark ? "vs-dark" : "vs",
     fontSize: 14.5,
     readOnly: true,
