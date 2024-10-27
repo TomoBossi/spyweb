@@ -59,13 +59,17 @@ print(d20)
 
   outputTextAreaPlaceholder: `Acá vas a ver las salidas o errores de la ejecución`,
 
-  runButtonLabel: "Ejecutar",
+  runButtonLabel: "Ejecutar (F5)",
 
-  resetButtonLabel: "Reiniciar",
+  resetButtonLabel: "Reiniciar ejecutor",
 
-  openButtonLabel: "Abrir",
+  openButtonLabel: "Abrir archivo",
 
-  saveButtonLabel: "Guardar",
+  saveButtonLabel: "Guardar (Ctrl + S)",
+
+  layoutToggleButtonLabel: "Alternar esquema",
+
+  displayToggleButtonLabel: "Alternar modo",
 
 };
 
@@ -78,9 +82,9 @@ export const workerDefaults = { // cannot include functions
   conditionNotMet: "No se cumple esta condición"
 };
 
-//document.getElementById("run_container").innerHTML = defaults.runButtonLabel;
-//document.getElementById("reset_container").innerHTML = defaults.resetButtonLabel;
-//document.getElementById("open_container").innerHTML = defaults.openButtonLabel;
-//ocument.getElementById("save_container").innerHTML = defaults.saveButtonLabel;
-//document.getElementById("_container").innerHTML = defaults.layoutToggleButtonLabel;
-//ocument.getElementById("_container").innerHTML = defaults.modeToggleButtonLabel;
+document.getElementById("run_container").title = defaults.runButtonLabel;
+document.getElementById("reset_container").title = defaults.resetButtonLabel;
+document.getElementById("load_container").title = defaults.openButtonLabel;
+document.getElementById("download_container").title = defaults.saveButtonLabel;
+document.getElementById("layout_toggle_container").title = defaults.layoutToggleButtonLabel;
+document.getElementById("display_toggle_container").title = defaults.displayToggleButtonLabel;

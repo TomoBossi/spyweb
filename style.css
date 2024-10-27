@@ -206,18 +206,39 @@ body {
 .buttons_bar {
   background-color: var(--button-bar-color);
   display: flex;
-  padding: 3px;
-  padding-bottom: 4px;
   column-gap: 5px;
   height: 30px;
   width: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px var(--border-color) solid;
+}
+
+#editor_buttons, #misc_buttons {
+  background-color: var(--button-bar-color);
+  display: flex;
+  height: 30px;
+  padding: 3px;
+  padding-bottom: 4px;
+  column-gap: 5px;
   overflow: hidden;
   box-sizing: border-box;
   border-bottom: 1px var(--border-color) solid;
 }
 
+#editor_buttons {
+  width: 100%;
+}
+
+#misc_buttons {
+  position: absolute;
+  right: 0px;
+  width: 57px;
+}
+
 #tester_buttons_bar {
   display: flex;
+  height: 30px;
+  width: 100%;
 }
 
 .bar_button_container {
