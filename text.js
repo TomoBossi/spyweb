@@ -71,6 +71,8 @@ print(d20)
 
   displayToggleButtonLabel: "Alternar modo",
 
+  testSuiteSelectorPlaceholder: "Seleccioná un set de tests",
+
 };
 
 export const workerDefaults = { // cannot include functions
@@ -88,3 +90,4 @@ document.getElementById("load_container").title = defaults.openButtonLabel;
 document.getElementById("download_container").title = defaults.saveButtonLabel;
 document.getElementById("layout_toggle_container").title = defaults.layoutToggleButtonLabel;
 document.getElementById("display_toggle_container").title = defaults.displayToggleButtonLabel;
+document.getElementById("test_suite_selector_placeholder").innerHTML = defaults.testSuiteSelectorPlaceholder;

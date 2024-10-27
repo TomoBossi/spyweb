@@ -231,7 +231,7 @@ body {
 
 #misc_buttons {
   position: absolute;
-  right: 0px;
+  right: 1px;
   width: 57px;
 }
 
@@ -239,6 +239,7 @@ body {
   display: flex;
   height: 30px;
   width: 100%;
+  padding: 3px;
 }
 
 .bar_button_container {
@@ -249,7 +250,7 @@ body {
   height: 23px;
   width: 23px;
   box-sizing: border-box;
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
 .bar_button_container:hover[enabled="true"] {
@@ -304,4 +305,30 @@ body {
 
 #vertical_layout {
   display: var(--display-vertical-layout-icon);
+}
+
+select {
+  display: inline-block;
+  margin: 0;
+  padding-left: 4px;
+  height: auto;
+  width: 200px;
+  max-width: calc(100% - 58px);
+  background-color: var(--button-bar-color);
+  color: var(--button-enabled-font-color);
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+  font-size: 13px;
+  font-family: Arial, Helvetica, sans-serif;
+  cursor: pointer;
+}
+
+option {
+  width: 100%;
+  font-family: inherit;
+}
+
+select:hover, select:focus {
+  border-color: var(--toggle-color);
+  outline: none;
 }
