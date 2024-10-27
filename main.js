@@ -10,13 +10,19 @@ document.addEventListener("keydown", (event) => {
   if (event.ctrlKey && event.key === "s") {
     event.preventDefault();
     download();
+  } else if (event.ctrlKey && event.key === "o") {
+    event.preventDefault();
+    document.getElementById("load_input").click();
+  } else if (event.key === "F9") {
+    event.preventDefault();
+    executor.reset();
   } else if (event.key === "F5") {
     event.preventDefault();
     executor.run(editor.getInput());
   }
 });
 
-document.getElementById("load").addEventListener("change", (event) => {
+document.getElementById("load_input").addEventListener("change", (event) => {
   const file = event.target.files[0];
   if (file) {
     let reader = new FileReader();

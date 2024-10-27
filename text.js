@@ -61,9 +61,9 @@ print(d20)
 
   runButtonLabel: "Ejecutar (F5)",
 
-  resetButtonLabel: "Reiniciar ejecutor",
+  resetButtonLabel: "Reiniciar ejecutor (F9)",
 
-  openButtonLabel: "Abrir archivo",
+  openButtonLabel: "Abrir archivo (Ctrl + O)",
 
   saveButtonLabel: "Guardar (Ctrl + S)",
 
