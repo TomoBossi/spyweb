@@ -37,12 +37,12 @@ function download() {
   URL.revokeObjectURL(url);
 }
 
-document.getElementById("download").addEventListener("click", () => download());
+document.getElementById("download_container").addEventListener("click", () => download());
 
-document.getElementById("display_toggle").addEventListener("click", () => editor.displayToggle());
+document.getElementById("display_toggle_container").addEventListener("click", () => editor.displayToggle());
 
-document.getElementById("run").addEventListener("click", () => executor.run(editor.getInput()));
+document.getElementById("run_container").addEventListener("click", () => executor.run(editor.getInput()));
 
-document.getElementById("reset").addEventListener("click", () => executor.reset());
+document.getElementById("reset_container").addEventListener("click", () => executor.reset());
 
-document.getElementById("layout_toggle").addEventListener("click", () => editor.layoutToggle());
+document.getElementById("layout_toggle_container").addEventListener("click", () => editor.layoutToggle());

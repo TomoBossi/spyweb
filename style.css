@@ -153,7 +153,7 @@ body {
   border: 1px var(--border-color) solid;
 }
 
-#test_area_wrapper {
+#tester_area_wrapper {
   width: var(--test-areas-wrapper-width);
   max-width: var(--test-areas-wrapper-max-width);
   min-width: var(--test-areas-wrapper-min-width);
@@ -162,7 +162,7 @@ body {
   box-sizing: border-box;
 }
 
-#monaco_wrapper {
+#editor_area_wrapper {
   height: 100%;
   overflow: hidden;
   box-sizing: border-box;
@@ -174,7 +174,7 @@ body {
   border-right: var(--editor-text-areas-wrapper-border-right);
 }
 
-#monaco_editor_wrapper {
+#input_wrapper {
   flex-grow: 1;
   overflow: hidden;
   border-right: var(--editor-wrapper-border-right);
@@ -190,7 +190,7 @@ body {
   min-height: var(--editor-wrapper-min-height);
 }
 
-#monaco_output_wrapper {
+#output_wrapper {
   flex-grow: 1;
   overflow: hidden;
   float: var(--output-wrapper-float);
@@ -205,6 +205,10 @@ body {
 
 .buttons_bar {
   background-color: var(--button-bar-color);
+  display: flex;
+  padding: 3px;
+  padding-bottom: 4px;
+  column-gap: 5px;
   height: 30px;
   width: 100%;
   overflow: hidden;
@@ -212,104 +216,53 @@ body {
   border-bottom: 1px var(--border-color) solid;
 }
 
-#buttons_bar {
-  display: flex;
-  height: 100%;
-  width: 345px;
-}
-
 #tester_buttons_bar {
   display: flex;
-  height: 100%;
-  width: 105px;
 }
 
-.monaco_editor_button {
-  white-space: nowrap;
+.bar_button_container {
   display: flex;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   user-select: none;
-  font-size: 13px;
-  background-color: var(--button-color);
-  height: 100%;
-  width: 25%;
-  padding-right: 7px;
+  padding: 3px;
+  color: var(--toggle-color);
+  height: 23px;
+  width: 23px;
   box-sizing: border-box;
-  border-right: 1px var(--border-color) solid;
-  line-height: 200%;
-  vertical-align: center;
+  border-radius: 4px;
 }
 
-.material-symbols-outlined {
-  user-select: none;
-  position: relative;
-  top: 2px;
-}
-
-.monaco_editor_button:hover[enabled="true"] {
+.bar_button_container:hover[enabled="true"] {
   background-color: var(--button-hover-color);
   cursor: pointer;
 }
 
-.monaco_editor_button[enabled="true"] {
+.bar_button_container[enabled="true"] {
   color: var(--button-enabled-font-color);
 }
 
-.monaco_editor_button[enabled="false"] {
+.bar_button_container[enabled="false"] {
   color: var(--button-disabled-font-color);
 }
 
-#monaco_textareas_wrapper {
+.icon {
+  user-select: none;
+  width: 17px;
+  height: 17px;
+}
+
+#input_output_wrapper {
   overflow: hidden;
   height: calc(100% - 30px);
 }
 
-#monaco_editor {
+#input {
   height: 100%;
   width: 100%;
 }
 
-#monaco_output {
+#output {
   height: 100%;
   width: 100%;
-}
-
-#display_toggle {
-  user-select: none;
-  width: 30px;
-  height: 30px;
-  position: fixed;
-  top: 0px;
-  right: 0px;
-  color: var(--toggle-color);
-  align-items: center;
-  vertical-align: center;
-}
-
-#layout_toggle {
-  user-select: none;
-  width: 30px;
-  height: 30px;
-  position: fixed;
-  top: 0px;
-  right: 30px;
-  color: var(--toggle-color);
-  align-items: center;
-  vertical-align: center;
-}
-
-#display_toggle:hover, #layout_toggle:hover {
-  cursor: pointer;
-}
-
-#dark, #light, #default_layout, #horizontal_layout, #vertical_layout {
-  transform: scale(0.7);
-  vertical-align: center;
-}
-
-#default_layout {
-  transform: scale(-0.7, 0.7);
-  padding-left: 6px;
 }
 
 #dark {

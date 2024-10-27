@@ -70,15 +70,17 @@ print(d20)
 };
 
 export const workerDefaults = { // cannot include functions
+  in: "en",
+  line: "linea",
   errorInCurrentFile: "Error en este archivo",
   errorInFile: "Error en el archivo",
   errorInCurrentTestCase: "Error en este caso de prueba",
-  in: "en",
-  line: "linea",
   conditionNotMet: "No se cumple esta condición"
 };
 
-document.getElementById("run_label").innerHTML = defaults.runButtonLabel;
-document.getElementById("reset_label").innerHTML = defaults.resetButtonLabel;
-document.getElementById("open_label").innerHTML = defaults.openButtonLabel;
-document.getElementById("save_label").innerHTML = defaults.saveButtonLabel;
+//document.getElementById("run_container").innerHTML = defaults.runButtonLabel;
+//document.getElementById("reset_container").innerHTML = defaults.resetButtonLabel;
+//document.getElementById("open_container").innerHTML = defaults.openButtonLabel;
+//ocument.getElementById("save_container").innerHTML = defaults.saveButtonLabel;
+//document.getElementById("_container").innerHTML = defaults.layoutToggleButtonLabel;
+//ocument.getElementById("_container").innerHTML = defaults.modeToggleButtonLabel;

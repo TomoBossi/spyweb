@@ -10,26 +10,26 @@ let executor = new CodeRunner({
     reset? 
       editor.setOutput(`${defaults.executorResetLoadingMessage}\n`):
     editor.appendOutput(`\n${defaults.executorLoadingMessage}\n`);
-    document.getElementById("run").setAttribute("enabled", false);
-    document.getElementById("reset").setAttribute("enabled", false);
+    document.getElementById("run_container").setAttribute("enabled", false);
+    document.getElementById("reset_container").setAttribute("enabled", false);
   },
 
   postInitHook: (_) => {
     editor.appendOutput(`${defaults.executorLoadedSuccessfullyMessage}\n`);
-    document.getElementById("run").setAttribute("enabled", true);
-    document.getElementById("reset").setAttribute("enabled", true);
+    document.getElementById("run_container").setAttribute("enabled", true);
+    document.getElementById("reset_container").setAttribute("enabled", true);
   },
 
   preRunHook: () => {
     editor.setOutput("");
-    document.getElementById("run").setAttribute("enabled", "false");
+    document.getElementById("run_container").setAttribute("enabled", "false");
   },
 
   postRunHook: (output, duration) => {
     editor.setOutput(output);
     editor.appendOutput(`${output === ""?"":"\n"}${defaults.executionDurationMessage(duration)}\n`);
     editor.scrollOutput();
-    document.getElementById("run").setAttribute("enabled", "true");
+    document.getElementById("run_container").setAttribute("enabled", "true");
   },
 
   postGetHook: null,

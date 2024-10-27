@@ -1,10 +1,10 @@
 import { defaults } from "../text.js";
 
 const params = new URLSearchParams(window.location.href.split("?").pop());
-const editorWrapper = document.getElementById("monaco_editor_wrapper");
-const outputWrapper = document.getElementById("monaco_output_wrapper");
-const editorAreaWrapper = document.getElementById("monaco_wrapper");
-const testAreaWrapper = document.getElementById("test_area_wrapper");
+const editorWrapper = document.getElementById("input_wrapper");
+const outputWrapper = document.getElementById("output_wrapper");
+const editorAreaWrapper = document.getElementById("editor_area_wrapper");
+const testAreaWrapper = document.getElementById("tester_area_wrapper");
 
 let dark = !(params.has("light_mode") && params.get("light_mode") === "true");
 document.body.setAttribute("dark", dark);
@@ -58,7 +58,7 @@ export function layoutToggle() {
 }
 
 let editorTextArea = monaco.editor.create(
-  document.getElementById("monaco_editor"),
+  document.getElementById("input"),
   {
     value: defaults.editorPlaceholder,
     theme: dark ? "vs-dark" : "vs",
@@ -72,7 +72,7 @@ let editorTextArea = monaco.editor.create(
 );
 
 const outputTextArea = monaco.editor.create(
-  document.getElementById("monaco_output"),
+  document.getElementById("output"),
   {
     value: `${defaults.outputTextAreaPlaceholder}\n`,
     theme: dark ? "vs-dark" : "vs",
