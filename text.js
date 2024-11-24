@@ -1,87 +1,84 @@
 export const defaults = {
-  executorResetLoadingMessage: "Reiniciando ejecutor...",
+  executorResetLoadingMessage: "Restarting executor...",
 
-  executorLoadingMessage: "Iniciando ejecutor...",
+  executorLoadingMessage: "Initializing executor...",
 
-  executorLoadedSuccessfullyMessage: "Ejecutor iniciado con éxito :D",
+  executorLoadedSuccessfullyMessage: "Executor successfully initialized :D",
 
   executionDurationMessage: (duration) => {
-    return `Ejecutado en ${duration.toFixed(3)} segundos`;
+    return `${duration.toFixed(3)} seconds (total)`;
   },
 
   testerErrorMessage: () => {
-    return `Error en el caso de prueba:`;
+    return `Error in the test case:`;
   },
 
   testerErrorMessageRepetition: (i) => {
-    return `Error en la repetición {${i}+1} del caso de prueba:`;
+    return `Error on repetition {${i}+1} of the test case:`;
   },
 
   testerSuccessMessage: (label) => {
-    return `Pasaste este caso de prueba!`;
+    return `Your code passed this test case!`;
   },
 
   testerBlameErrorMessage: (j) => {
-    return `Error en esta linea (Parece venir de tu función!)`;
+    return `Error in this line (seems to be caused by your function!)`;
   },
 
   testerBlameErrorMessageAssert: (j) => {
-    return `Error en esta linea (no se cumplió esta condición)`;
+    return `Error in this line (condition was not met)`;
   },
 
   editorPlaceholder: `"""
-  _____                _____                      
- |  __ \\              / ____/                     
- | |__) |__ _ __  ___| |     ___  _ __ ___  _ __  
- |  ___/ _ \\ '_ \\/ __| |    / _ \\| '_ ' _ \\| '_ \\ 
- | |  |  __/ | | \\__ \\ |___| (_) | | | | | | |_) |
- |_|   \\___|_| |_|___/\\_____\\___/|_| |_| |_| .__/ 
-                                           | |    
-                                           |_|
+   ____            __        __   _     
+  / ___| _ __  _   \\ \\      / /__| |__  
+  \\___ \\| '_ \\| | | \\ \\ /\\ / / _ \\ '_ \\ 
+   ___) | |_) | |_| |\\ V  V /  __/ |_) |
+  |____/| .__/ \\__, | \\_/\\_/ \\___|_.__/ 🕸
+        |_|    |___/                    
 
-Subí tu archivo .py o pegá/escribí tu código acá
+Upload your .py file, or paste/write your code here
 
-Por ejemplo:
+For example:
 """
 
 import random
 
-def dado(caras):
+def dice(n: int) -> int:
   """
-  Simula tirar un dado de la cantidad de caras pasada por parámetro
+  Simulates rolling a dice of n faces
   """
-  resultado = random.randint(1, caras)
-  return resultado
+  return random.randint(1, n)
 
-d20 = dado(20)
+d20 = dice(20)
 print(d20)
 `,
 
-  outputTextAreaPlaceholder: `Acá vas a ver las salidas o errores de la ejecución`,
+  outputTextAreaPlaceholder: `Outputs printed to Standard Out will be shown here`,
 
-  runButtonLabel: "Ejecutar (F5)",
+  runButtonLabel: "Run (F5)",
 
-  resetButtonLabel: "Reiniciar ejecutor (F9)",
+  resetButtonLabel: "Restart executor (F9)",
 
-  openButtonLabel: "Abrir archivo (Ctrl + O)",
+  openButtonLabel: "Open file (Ctrl + O)",
 
-  saveButtonLabel: "Guardar (Ctrl + S)",
+  saveButtonLabel: "Save (Ctrl + S)",
 
-  layoutToggleButtonLabel: "Alternar esquema",
+  layoutToggleButtonLabel: "Toggle layout",
 
-  displayToggleButtonLabel: "Alternar modo",
+  displayToggleButtonLabel: "Toggle mode",
 
-  testSuiteSelectorPlaceholder: "Seleccioná un set de tests",
+  testSuiteSelectorPlaceholder: "Select a test suite",
 
 };
 
 export const workerDefaults = { // cannot include functions
-  in: "en",
-  line: "linea",
-  errorInCurrentFile: "Error en este archivo",
-  errorInFile: "Error en el archivo",
-  errorInCurrentTestCase: "Error en este caso de prueba",
-  conditionNotMet: "No se cumple esta condición"
+  in: "in",
+  line: "line",
+  errorInCurrentFile: "Error in this file",
+  errorInFile: "Error in the file",
+  errorInCurrentTestCase: "Error in this test case",
+  conditionNotMet: "Condition was not met"
 };
 
 document.getElementById("run_container").title = defaults.runButtonLabel;
